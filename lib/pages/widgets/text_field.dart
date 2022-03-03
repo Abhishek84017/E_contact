@@ -37,7 +37,7 @@ class InputField extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.maxLength,
-    this.onChanged, this.textCapitalization,
+    this.onChanged, this.textCapitalization = TextCapitalization.none,
   }) : super(key: key);
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:widget_of_the_week/screens/homepage.dart';
+import 'package:widget_of_the_week/screens/profile.dart';
 import 'pages/auth/signin.dart';
 
 class MyApp extends StatelessWidget {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
           return child;
         });
       },
-      home: const HomePage(),
+      home: const MyProfile(),
     );
   }
 }

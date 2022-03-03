@@ -19,17 +19,21 @@ class _HomePageState extends State<HomePage> {
     'Add Member',
     "Send Notification",
     'Send Whatsapp',
-    'Send Message'
+    'Send Message',
+    'Calender',
+    'Media Corner',
   ];
   final List<IconData> homeScreenIcons = [
     FontAwesome.user,
-    FontAwesome. group,
-    FontAwesome.search_plus,
-    FontAwesome.address_book                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ,
+    FontAwesome.group,
+    FontAwesome.address_book,
+    FontAwesome.search,
     FontAwesome.home,
-    FontAwesome.home,
-    FontAwesome.home,
-    FontAwesome.search_plus,
+    FontAwesome.paper_plane,
+    FontAwesome.whatsapp,
+    Icons.message,
+    FontAwesome.calendar,
+    FontAwesome.camera
   ];
 
   @override
@@ -59,23 +63,24 @@ class _HomePageState extends State<HomePage> {
                   MediaQuery.of(context).orientation == Orientation.landscape
                       ? 3
                       : 2,
-              crossAxisSpacing: 2.w,
+              crossAxisSpacing: 1.w,
               mainAxisSpacing: 1.w,
-              childAspectRatio: (2 / 1.2)),
+              childAspectRatio: (2 / 1.3)),
           itemBuilder: (context, index) {
             var item = name[index];
             var icons = homeScreenIcons[index];
-            return InkWell(
-                splashColor: Colors.red.shade50,
-                onTap: () {},
-                child: Card(
-                    child: Column(
+            return Card(
+                shadowColor: Colors.red,
+                margin: EdgeInsets.all(8.w),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.w)),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Icon(icons),
                     Text(item),
                   ],
-                )));
+                ));
           }),
     );
   }
