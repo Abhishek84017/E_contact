@@ -6,18 +6,25 @@ class SignInButton extends StatelessWidget {
   final IconData icon;
   final Color maincolor;
   final VoidCallback callback;
+  final double width;
 
   const SignInButton(
-      {Key key, this.text, this.icon, this.maincolor, this.callback})
+      {Key key,
+      this.text,
+      this.icon,
+      this.maincolor,
+      this.callback,
+      this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 5.0.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.0.w, vertical: 5.0.h),
       child: Container(
-        width: double.infinity,
+        width: width,
         height: 40.h,
+        alignment: Alignment.centerLeft,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(60)),
         ),

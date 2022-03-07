@@ -1,7 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:widget_of_the_week/constant/palette.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:widget_of_the_week/screens/addmembers.dart';
+import 'package:widget_of_the_week/screens/member_details.dart';
+import 'package:widget_of_the_week/screens/profile.dart';
+import 'package:widget_of_the_week/screens/send_messages.dart';
+import 'package:widget_of_the_week/screens/send_notification.dart';
+import 'package:widget_of_the_week/screens/send_whatsapp_messages.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -71,15 +78,63 @@ class _HomePageState extends State<HomePage> {
             var icons = homeScreenIcons[index];
             return Card(
                 shadowColor: Colors.red,
-                margin: EdgeInsets.all(8.w),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.w)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icons),
-                    Text(item),
-                  ],
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10.w),
+                  onTap: () {
+                    if (item == 'Add Member') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const AddMembers()));
+                    }
+                    if (item == 'My Profile') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const MyProfile()));
+                    }
+                    if (item == 'My Profile') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const MyProfile()));
+                    }
+                    if (item == 'Member Details') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const MemberDetails()));
+                    }
+                    if (item == 'Send Notification') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const SendNotification()));
+                    }
+                    if (item == 'Send Whatsapp') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  const SendWhatsappMessage()));
+                    }
+                    if (item == 'Send Message') {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                              const SendMessages()));
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(icons),
+                      Text(item),
+                    ],
+                  ),
                 ));
           }),
     );
