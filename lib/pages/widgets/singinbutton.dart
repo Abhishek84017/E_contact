@@ -24,12 +24,11 @@ class SignInButton extends StatelessWidget {
       child: Container(
         width: width,
         height: 40.h,
-        alignment: Alignment.centerLeft,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(60)),
         ),
         child: TextButton(
-          style: TextButton.styleFrom(backgroundColor: Colors.black),
+          style: TextButton.styleFrom(backgroundColor: Colors.blue),
           onPressed: callback,
           child: Text(
             text,

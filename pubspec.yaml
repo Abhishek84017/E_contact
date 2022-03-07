@@ -39,6 +39,8 @@ dependencies:
   flutter_icons: ^1.1.0
   image_picker: ^0.8.4+10
   url_launcher: ^6.0.20
+  http: ^0.13.4
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

@@ -21,6 +21,7 @@ class InputField extends StatelessWidget {
   final int maxLength;
   final ValueChanged<String> onChanged;
   final TextCapitalization textCapitalization;
+  final bool enable;
 
   const InputField({
     Key key,
@@ -41,7 +42,7 @@ class InputField extends StatelessWidget {
     this.minLines,
     this.maxLength,
     this.onChanged,
-    this.textCapitalization = TextCapitalization.none,
+    this.textCapitalization = TextCapitalization.none, this.enable,
   }) : super(key: key);
 
   @override
@@ -56,6 +57,7 @@ class InputField extends StatelessWidget {
             child:  Text(text ?? '',style:  const TextStyle(fontWeight:FontWeight.bold),),
           ),
           TextFormField(
+              enabled: enable,
               keyboardType: keyboardType,
               controller: controller,
               focusNode: focusNode,
