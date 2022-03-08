@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:widget_of_the_week/pages/widgets/dropdownbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ class AddMembers extends StatefulWidget {
 
 class _AddMembersState extends State<AddMembers> {
   DateTime _selectedDate = DateTime.now();
+  DateTime _selectedJoining = DateTime.now();
 
   Future _selectdata(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -28,8 +30,20 @@ class _AddMembersState extends State<AddMembers> {
       setState(() {
         _selectedDate = picked;
         _dateOfBirth.text = "$picked";
-        _dateOfJoining.text = "$picked";
       });
+    }
+  }
+
+  Future _dateJoining(BuildContext context) async {
+    final DateTime joiningDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedJoining,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (joiningDate != null) {
+      _selectedJoining = joiningDate;
+      _dateOfJoining.text = "$joiningDate";
     }
   }
 
@@ -119,6 +133,41 @@ class _AddMembersState extends State<AddMembers> {
 
   String genderValue = '';
 
+  String dropdownvalue = "AEREN";
+  String dropdownblood = "A+";
+
+  var gotraData = [
+    "AEREN",
+    "BANSAL",
+    "BHANDAL",
+    "GOYAL",
+    "MITTAL",
+    "MAITREYA",
+    "JINDAL",
+    "KUCHHAL",
+    "MENGAL",
+    "BINDAL",
+    "DHARAN",
+    "GARG",
+    "GOEN",
+    "KANSAL",
+    "MRIDKUL",
+    "NAGAL",
+    "SINGHAL",
+    "TAYAL",
+    "TINGAL"
+  ];
+  var Blood = [
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "AB+",
+    "AB-",
+    "O+",
+    "O-",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -148,10 +197,27 @@ class _AddMembersState extends State<AddMembers> {
                 controller: _fullName,
                 inputDecoration: const InputDecoration(labelText: 'Full Name'),
               ),
-              InputField(
-                text: 'Gotra',
-                controller: _gotra,
-                inputDecoration: const InputDecoration(labelText: 'Gotra'),
+              Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 12.h, top: 12.h),
+                    child: const Text(
+                      'Gotra',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  )),
+              DropDownButtonWidget(
+                value: dropdownvalue,
+                hinttext: 'Gotra',
+                items: gotraData.map((e) {
+                  return DropdownMenuItem(value: e, child: Text(e));
+                }).toList(),
+                callback: (newvalue) {
+                  setState(() {
+                    dropdownvalue = newvalue;
+                  });
+                },
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
@@ -201,11 +267,27 @@ class _AddMembersState extends State<AddMembers> {
                 controller: _age,
                 inputDecoration: const InputDecoration(labelText: 'Age'),
               ),
-              InputField(
-                text: 'Blood Group',
-                controller: _bloodGroup,
-                inputDecoration:
-                    const InputDecoration(labelText: 'Blood Group'),
+              Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 12.h, top: 12.h),
+                    child: const Text(
+                      'Blood Group',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  )),
+              DropDownButtonWidget(
+                value: dropdownblood,
+                hinttext: 'Blood Group',
+                items: Blood.map((e) {
+                  return DropdownMenuItem(value: e, child: Text(e));
+                }).toList(),
+                callback: (newvalue) {
+                  setState(() {
+                    dropdownblood = newvalue;
+                  });
+                },
               ),
               InputField(
                 readonly: true,
@@ -218,6 +300,7 @@ class _AddMembersState extends State<AddMembers> {
                     const InputDecoration(labelText: 'Date Of Birth'),
               ),
               InputField(
+                keyboardType: TextInputType.number,
                 text: 'Mobile',
                 controller: _mobile,
                 inputDecoration: const InputDecoration(labelText: 'Mobile'),
@@ -246,7 +329,7 @@ class _AddMembersState extends State<AddMembers> {
               InputField(
                 text: 'Occupation',
                 controller: _occupation,
-                inputDecoration: const InputDecoration(labelText: 'Code no'),
+                inputDecoration: const InputDecoration(labelText: 'Occupation'),
               ),
               InputField(
                 text: 'Occupation Detail',
@@ -273,8 +356,9 @@ class _AddMembersState extends State<AddMembers> {
                     const InputDecoration(labelText: 'Birth Place'),
               ),
               InputField(
-                onTap: (){
-                  _selectedDate;
+                readonly: true,
+                onTap: () {
+                  _dateJoining(context);
                 },
                 text: 'Date Of Joining',
                 controller: _dateOfJoining,
@@ -288,6 +372,8 @@ class _AddMembersState extends State<AddMembers> {
                     const InputDecoration(labelText: 'Social Group'),
               ),
               InputField(
+                obscureText: true,
+                maxLines: 1,
                 text: 'password',
                 controller: _password,
                 inputDecoration: const InputDecoration(labelText: 'password'),
@@ -322,15 +408,53 @@ class _AddMembersState extends State<AddMembers> {
                 inputDecoration: const InputDecoration(labelText: 'Reference'),
               ),
               InputField(
+                keyboardType: TextInputType.number,
                 text: 'Aadhar No',
                 controller: _aadharNo,
                 inputDecoration: const InputDecoration(labelText: 'Aadhar No'),
               ),
-              InputField(
-                text: 'Marital Status',
-                controller: _maritalStatus,
-                inputDecoration:
-                    const InputDecoration(labelText: 'Marital Status'),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.h),
+                      child: const Text(
+                        'Marital Status',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 3.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Row(
+                        children: [
+                          Radio(
+                              value: 'Married',
+                              groupValue: genderValue,
+                              onChanged: (val) {
+                                genderValue = val;
+                                setState(() {});
+                              }),
+                          const Text('Married'),
+                          Radio(
+                              value: 'UnMarried',
+                              groupValue: genderValue,
+                              onChanged: (val) {
+                                genderValue = val;
+                                setState(() {});
+                              }),
+                          const Text('UnMarried'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SignInButton(
                 text: 'Add Member',
