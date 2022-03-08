@@ -72,7 +72,7 @@ class _AddMembersState extends State<AddMembers> {
       "status": 1,
       "barcode": "",
       "password": _password.text,
-      "anniversary": _anniversaryDate.text,
+      "anniversary": "",
       "father_name": _fatherName.text,
       "mother_name": _motherName.text,
       "office_email": _officeEmail.text,
@@ -123,7 +123,6 @@ class _AddMembersState extends State<AddMembers> {
   final TextEditingController _dateOfJoining = TextEditingController();
   final TextEditingController _socialGroup = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _anniversaryDate = TextEditingController();
   final TextEditingController _fatherName = TextEditingController();
   final TextEditingController _motherName = TextEditingController();
   final TextEditingController _officeEmail = TextEditingController();
@@ -188,6 +187,7 @@ class _AddMembersState extends State<AddMembers> {
                     ),
                   )),
               InputField(
+                keyboardType: TextInputType.number,
                 text: 'Code No',
                 controller: _codeNo,
                 inputDecoration: const InputDecoration(labelText: 'Code No'),
@@ -263,6 +263,7 @@ class _AddMembersState extends State<AddMembers> {
                 ),
               ),
               InputField(
+                keyboardType: TextInputType.number,
                 text: 'Age',
                 controller: _age,
                 inputDecoration: const InputDecoration(labelText: 'Age'),
@@ -338,6 +339,7 @@ class _AddMembersState extends State<AddMembers> {
                     const InputDecoration(labelText: 'Occupation Detail'),
               ),
               InputField(
+                keyboardType: TextInputType.number,
                 text: 'Office Contact',
                 controller: _officeContact,
                 inputDecoration:
@@ -377,12 +379,6 @@ class _AddMembersState extends State<AddMembers> {
                 text: 'password',
                 controller: _password,
                 inputDecoration: const InputDecoration(labelText: 'password'),
-              ),
-              InputField(
-                text: 'anniversary',
-                controller: _anniversaryDate,
-                inputDecoration:
-                    const InputDecoration(labelText: 'anniversary'),
               ),
               InputField(
                 text: 'Father Name',
@@ -458,7 +454,127 @@ class _AddMembersState extends State<AddMembers> {
               ),
               SignInButton(
                 text: 'Add Member',
-                callback: _addmembers,
+                callback: () {
+                  if (_codeNo.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'CodeNo is required');
+                    return;
+                  }
+                  if (_fullName.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Name is required');
+                    return;
+                  }
+                  if (_gotra.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Gotra is required');
+                    return;
+                  }
+                  if (_gender.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Gender is required');
+                    return;
+                  }
+                  if (_age.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Age is required');
+                    return;
+                  }
+                  var b = int.parse(_age.text);
+                  if (b < 18) {
+                    Fluttertoast.showToast(msg: 'Age must be Greater than 18');
+                    return;
+                  }
+                  if (_bloodGroup.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Blood Group is Required');
+                    return;
+                  }
+                  if (_dateOfBirth.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Date of Birth is Required');
+                    return;
+                  }
+                  if (_mobile.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Mobile No  is Required');
+                    return;
+                  }
+                  if (!RegExp(r"^(?:[+0]9)?[0-9]{10}$")
+                      .hasMatch(_mobile.text)) {
+                    Fluttertoast.showToast(
+                        msg: 'please enter valid mobile number');
+                    return;
+                  }
+                  if (_email.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'E-mail is required');
+                    return;
+                  }
+                  if (!RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(_email.text)) {
+                    Fluttertoast.showToast(msg: 'please enter valid email');
+                  }
+                  if (_address.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Address is required');
+                    return;
+                  }
+                  if (_firmName.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'FirmName is required');
+                    return;
+                  }
+                  if (_officeAddress.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Office Address is required');
+                    return;
+                  }
+                  if (_occupation.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Occupation is required');
+                    return;
+                  }
+                  if (_occupationDetail.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'OccupationDetail is required');
+                    return;
+                  }
+                  if (_officeContact.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'OfficeContact is required');
+                    return;
+                  }
+                  if (_nativePlace.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'NativePlace is required');
+                    return;
+                  }
+                  if (_birthPlace.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Birthplace is required');
+                    return;
+                  }
+                  if (_dateOfJoining.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Date of joining is required');
+                    return;
+                  }
+                  if (_socialGroup.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Social group is required');
+                    return;
+                  }
+                  if (_password.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Password is required');
+                    return;
+                  }
+                  if (_fatherName.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Father Name is required');
+                    return;
+                  }
+                  if (_motherName.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Mother Name is required');
+                    return;
+                  }
+                  if (_officeEmail.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Office Email is required');
+                    return;
+                  }
+                  if (_reference.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'References is required');
+                    return;
+                  }
+                  if (_aadharNo.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Aadhar no is required');
+                  }
+                  if (_maritalStatus.text.isEmpty) {
+                    Fluttertoast.showToast(msg: 'Marital Status  is required');
+                    return;
+                  }
+                },
                 width: 0.50.sw,
               )
             ],
