@@ -502,8 +502,7 @@ class _AddMembersState extends State<AddMembers> {
                     Fluttertoast.showToast(msg: 'E-mail is required');
                     return;
                   }
-                  if (!RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(_email.text)) {
                     Fluttertoast.showToast(msg: 'please enter valid email');
                   }
