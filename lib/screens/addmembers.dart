@@ -325,6 +325,7 @@ class _AddMembersState extends State<AddMembers> {
               InputField(
                 readonly: true,
                 text: 'Date Of Birth',
+
                 controller: _dateOfBirth,
                 onTap: () {
                   _selectdata(context);
