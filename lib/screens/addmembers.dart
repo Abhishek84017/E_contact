@@ -17,6 +17,8 @@ class AddMembers extends StatefulWidget {
 }
 
 class _AddMembersState extends State<AddMembers> {
+
+  bool _isloading = true;
   DateTime _selectedDate = DateTime.now();
   DateTime _selectedJoining = DateTime.now();
 
@@ -48,6 +50,7 @@ class _AddMembersState extends State<AddMembers> {
   }
 
   Future _addmembers() async {
+    _isloading = false;
     var data = <String, dynamic>{
       "code": _codeNo.text,
       "name": _fullName.text,
@@ -64,37 +67,64 @@ class _AddMembersState extends State<AddMembers> {
       "occupation": _occupation.text,
       "occupation_detail": _occupationDetail.text,
       "office_contact": _officeContact.text,
-      "image": null,
+      "image": '',
       "native_place": _nativePlace.text,
       "birth_place": _birthPlace.text,
       "date_of_join": _dateOfJoining.text,
       "social_group": _socialGroup.text,
-      "status": 1,
+      "status": "1",
       "barcode": "",
       "password": _password.text,
-      "anniversary": "",
+      "anniversary": "1997-05-28",
       "father_name": _fatherName.text,
       "mother_name": _motherName.text,
       "office_email": _officeEmail.text,
       "reference": _reference.text,
-      "special_achievement": "",
+      "special_achievement": "445654",
       "why_join": "545",
       "aadhar_no": _aadharNo.text,
       "token": "5745556",
-      "marrital": _maritalStatus.text,
+      "marrital": maritalValue,
       "device_type": "ios",
       "proof": "5445454545"
     };
-
     final response = await http.post(
-        Uri.https('https://econtact.votersmanagement.com/', 'api/add-member'),
+        Uri.https('econtact.votersmanagement.com', 'api/add-member'),
         body: data);
 
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        Fluttertoast.showToast(
-            msg: jsonData['message'], backgroundColor: Colors.red);
+        Fluttertoast.showToast(msg: jsonData['message'], backgroundColor: Colors.black);
+        _codeNo.clear();
+        _fullName.clear();
+        _gotra.clear();
+        genderValue = "";
+        _age.clear();
+        _bloodGroup.clear();
+        _dateOfBirth.clear();
+        _mobile.clear();
+        _email.clear();
+        _address.clear();
+        _firmName.clear();
+        _officeAddress.clear();
+        _occupation.clear();
+        _occupationDetail.clear();
+        _officeContact.clear();
+        _nativePlace.clear();
+        _birthPlace.clear();
+        _dateOfJoining.clear();
+        _socialGroup.clear();
+        _password.clear();
+        _fatherName.clear();
+        _motherName.clear();
+        _officeEmail.clear();
+        _reference.clear();
+        _aadharNo.clear();
+        maritalValue == '';
+        setState(() {
+          _isloading = true;
+        });
       }
     } on SocketException catch (_) {
       Fluttertoast.showToast(msg: 'Internet Not Connected');
@@ -106,7 +136,6 @@ class _AddMembersState extends State<AddMembers> {
   final TextEditingController _codeNo = TextEditingController();
   final TextEditingController _fullName = TextEditingController();
   final TextEditingController _gotra = TextEditingController();
-  final TextEditingController _gender = TextEditingController();
   final TextEditingController _age = TextEditingController();
   final TextEditingController _bloodGroup = TextEditingController();
   final TextEditingController _dateOfBirth = TextEditingController();
@@ -128,9 +157,10 @@ class _AddMembersState extends State<AddMembers> {
   final TextEditingController _officeEmail = TextEditingController();
   final TextEditingController _reference = TextEditingController();
   final TextEditingController _aadharNo = TextEditingController();
-  final TextEditingController _maritalStatus = TextEditingController();
+
 
   String genderValue = '';
+  String maritalValue = '';
 
   String dropdownvalue = "AEREN";
   String dropdownblood = "A+";
@@ -216,6 +246,7 @@ class _AddMembersState extends State<AddMembers> {
                 callback: (newvalue) {
                   setState(() {
                     dropdownvalue = newvalue;
+                    _gotra.text = newvalue;
                   });
                 },
               ),
@@ -226,7 +257,7 @@ class _AddMembersState extends State<AddMembers> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.h),
+                      EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.h),
                       child: const Text(
                         'Gender',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -287,6 +318,7 @@ class _AddMembersState extends State<AddMembers> {
                 callback: (newvalue) {
                   setState(() {
                     dropdownblood = newvalue;
+                    _bloodGroup.text = newvalue;
                   });
                 },
               ),
@@ -298,7 +330,7 @@ class _AddMembersState extends State<AddMembers> {
                   _selectdata(context);
                 },
                 inputDecoration:
-                    const InputDecoration(labelText: 'Date Of Birth'),
+                const InputDecoration(labelText: 'Date Of Birth'),
               ),
               InputField(
                 keyboardType: TextInputType.number,
@@ -325,7 +357,7 @@ class _AddMembersState extends State<AddMembers> {
                 text: 'Office Address',
                 controller: _officeAddress,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Office Address'),
+                const InputDecoration(labelText: 'Office Address'),
               ),
               InputField(
                 text: 'Occupation',
@@ -336,26 +368,26 @@ class _AddMembersState extends State<AddMembers> {
                 text: 'Occupation Detail',
                 controller: _occupationDetail,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Occupation Detail'),
+                const InputDecoration(labelText: 'Occupation Detail'),
               ),
               InputField(
                 keyboardType: TextInputType.number,
                 text: 'Office Contact',
                 controller: _officeContact,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Office Contact'),
+                const InputDecoration(labelText: 'Office Contact'),
               ),
               InputField(
                 text: 'Native Place',
                 controller: _nativePlace,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Native Place'),
+                const InputDecoration(labelText: 'Native Place'),
               ),
               InputField(
                 text: 'Birth Place',
                 controller: _birthPlace,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Birth Place'),
+                const InputDecoration(labelText: 'Birth Place'),
               ),
               InputField(
                 readonly: true,
@@ -365,13 +397,13 @@ class _AddMembersState extends State<AddMembers> {
                 text: 'Date Of Joining',
                 controller: _dateOfJoining,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Date Of Joining'),
+                const InputDecoration(labelText: 'Date Of Joining'),
               ),
               InputField(
                 text: 'Social Group',
                 controller: _socialGroup,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Social Group'),
+                const InputDecoration(labelText: 'Social Group'),
               ),
               InputField(
                 obscureText: true,
@@ -384,19 +416,19 @@ class _AddMembersState extends State<AddMembers> {
                 text: 'Father Name',
                 controller: _fatherName,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Father Name'),
+                const InputDecoration(labelText: 'Father Name'),
               ),
               InputField(
                 text: 'Mother Name',
                 controller: _motherName,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Mother Name'),
+                const InputDecoration(labelText: 'Mother Name'),
               ),
               InputField(
                 text: 'Office Email',
                 controller: _officeEmail,
                 inputDecoration:
-                    const InputDecoration(labelText: 'Office Email'),
+                const InputDecoration(labelText: 'Office Email'),
               ),
               InputField(
                 text: 'Reference',
@@ -416,7 +448,7 @@ class _AddMembersState extends State<AddMembers> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.h),
+                      EdgeInsets.symmetric(horizontal: 3.w, vertical: 7.h),
                       child: const Text(
                         'Marital Status',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -431,18 +463,18 @@ class _AddMembersState extends State<AddMembers> {
                       child: Row(
                         children: [
                           Radio(
-                              value: 'Married',
-                              groupValue: genderValue,
+                              value: 'Y',
+                              groupValue: maritalValue,
                               onChanged: (val) {
-                                genderValue = val;
+                                maritalValue = val;
                                 setState(() {});
                               }),
                           const Text('Married'),
                           Radio(
-                              value: 'UnMarried',
-                              groupValue: genderValue,
+                              value: 'N',
+                              groupValue: maritalValue,
                               onChanged: (val) {
-                                genderValue = val;
+                                maritalValue = val;
                                 setState(() {});
                               }),
                           const Text('UnMarried'),
@@ -452,7 +484,7 @@ class _AddMembersState extends State<AddMembers> {
                   ],
                 ),
               ),
-              SignInButton(
+           _isloading ? SignInButton(
                 text: 'Add Member',
                 callback: () {
                   if (_codeNo.text.isEmpty) {
@@ -467,7 +499,7 @@ class _AddMembersState extends State<AddMembers> {
                     Fluttertoast.showToast(msg: 'Gotra is required');
                     return;
                   }
-                  if (_gender.text.isEmpty) {
+                  if (genderValue.isEmpty) {
                     Fluttertoast.showToast(msg: 'Gender is required');
                     return;
                   }
@@ -480,6 +512,7 @@ class _AddMembersState extends State<AddMembers> {
                     Fluttertoast.showToast(msg: 'Age must be Greater than 18');
                     return;
                   }
+
                   if (_bloodGroup.text.isEmpty) {
                     Fluttertoast.showToast(msg: 'Blood Group is Required');
                     return;
@@ -492,6 +525,11 @@ class _AddMembersState extends State<AddMembers> {
                     Fluttertoast.showToast(msg: 'Mobile No  is Required');
                     return;
                   }
+                  if (!RegExp(r"^(?:[+0]9)?[0-9]{10}$").hasMatch(
+                      _officeContact.text)) {
+                    Fluttertoast.showToast(
+                        msg: 'please enter valid officeContact');
+                  }
                   if (!RegExp(r"^(?:[+0]9)?[0-9]{10}$")
                       .hasMatch(_mobile.text)) {
                     Fluttertoast.showToast(
@@ -502,7 +540,8 @@ class _AddMembersState extends State<AddMembers> {
                     Fluttertoast.showToast(msg: 'E-mail is required');
                     return;
                   }
-                  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(_email.text)) {
                     Fluttertoast.showToast(msg: 'please enter valid email');
                   }
@@ -519,7 +558,8 @@ class _AddMembersState extends State<AddMembers> {
                     return;
                   }
                   if (_occupation.text.isEmpty) {
-                    Fluttertoast.showToast(msg: 'Occupation is required');
+                    Fluttertoast.showToast(
+                        msg: 'Occupation_addmembers is required');
                     return;
                   }
                   if (_occupationDetail.text.isEmpty) {
@@ -569,13 +609,14 @@ class _AddMembersState extends State<AddMembers> {
                   if (_aadharNo.text.isEmpty) {
                     Fluttertoast.showToast(msg: 'Aadhar no is required');
                   }
-                  if (_maritalStatus.text.isEmpty) {
+                  if (maritalValue.isEmpty) {
                     Fluttertoast.showToast(msg: 'Marital Status  is required');
                     return;
                   }
+                  _addmembers();
                 },
                 width: 0.50.sw,
-              )
+              ) : const CircularProgressIndicator(strokeWidth: 1.0,),
             ],
           ),
         ),
