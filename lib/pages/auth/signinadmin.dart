@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:widget_of_the_week/pages/auth/signin.dart';
+import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 class SignInMember extends StatefulWidget {
@@ -12,6 +17,34 @@ class SignInMember extends StatefulWidget {
 }
 
 class _SignInMemberState extends State<SignInMember> {
+  bool _isloading = true;
+
+
+  final TextEditingController _usernameAdmin = TextEditingController();
+  final TextEditingController _passwordAdmin = TextEditingController();
+  Future _SignInAdmin() async {
+    var data = <String, dynamic>{
+      "username": _usernameAdmin.text,
+      "password": _passwordAdmin.text,
+    };
+    final response = await http.post(
+        Uri.https('econtact.votersmanagement.com', 'api/check-admin-login'),
+        body: data);
+    try {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+        Fluttertoast.showToast(msg: jsonData["message"]);
+        setState(() {
+          _isloading  = true;
+        });
+      }
+    } on SocketException catch (_) {
+      Fluttertoast.showToast(msg: 'Internet Connection required');
+    } catch (_) {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +56,9 @@ class _SignInMemberState extends State<SignInMember> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
           ),
           InputField(
+            controller: _usernameAdmin,
             inputDecoration: InputDecoration(
-              hintText: 'Email',
+              hintText: 'Username',
               prefixIcon: Icon(
                 Icons.email,
                 size: 18.sp,
@@ -33,6 +67,7 @@ class _SignInMemberState extends State<SignInMember> {
             ),
           ),
           InputField(
+            controller: _passwordAdmin,
             inputDecoration: InputDecoration(
               hintText: 'Password',
               prefixIcon: Icon(
@@ -43,25 +78,30 @@ class _SignInMemberState extends State<SignInMember> {
             ),
             textInputAction: TextInputAction.done,
           ),
-          /* Padding(
-              padding: EdgeInsets.only(right: 12.w),
-              child:  Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    'Forget Password?',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-            ),*/
+
           SizedBox(
             height: 5.h,
           ),
-          SignInButton(
+        _isloading ?  SignInButton(
             width: 0.95.sw,
             text: 'Login In',
-          ),
+            callback:(){
+              if(_usernameAdmin.text.isEmpty)
+              {
+                Fluttertoast.showToast(msg: 'Username required');
+                return;
+              }
+              if(_passwordAdmin.text.isEmpty)
+              {
+                Fluttertoast.showToast(msg: 'Password required');
+                return;
+              }
+              setState(() {
+                _isloading = false;
+              });
+              _SignInAdmin();
+            },
+          ) : const CircularIndicator(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,

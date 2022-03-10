@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/auth/signinadmin.dart';
+import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 
@@ -13,6 +19,35 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool isloading = true;
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+
+  Future _SignInMember() async {
+    var data = <String, dynamic>{
+      "username": _username.text,
+      "password": _password.text,
+    };
+    final response = await http.post(
+        Uri.https('econtact.votersmanagement.com', 'api/check-member-login'),
+        body: data);
+    try {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+        Fluttertoast.showToast(msg: jsonData["message"]);
+        _username.clear();
+        _password.clear();
+        setState(() {
+          isloading = true;
+        });
+      }
+    } on SocketException catch (_) {
+      Fluttertoast.showToast(msg: 'Internet Connection required');
+    } catch (_) {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,8 +60,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
             ),
             InputField(
+              controller: _username,
               inputDecoration: InputDecoration(
-                hintText: 'Email',
+                hintText: 'Username',
                 prefixIcon: Icon(
                   Icons.email,
                   size: 18.sp,
@@ -35,6 +71,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
             InputField(
+              controller: _password,
               inputDecoration: InputDecoration(
                 hintText: 'Password',
                 prefixIcon: Icon(
@@ -60,10 +97,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizedBox(
               height: 5.h,
             ),
-            SignInButton(
-              width: 0.95.sw,
-              text: 'Login In',
-            ),
+            isloading
+                ? SignInButton(
+                    width: 0.95.sw,
+                    text: 'Login In',
+                    callback: () {
+                      if (_username.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Username required');
+                        return;
+                      }
+                      if (_password.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Password required');
+                        return;
+                      }
+                      setState(() {
+                        isloading = false;
+                      });
+                      _SignInMember();
+                    },
+                  )
+                : const CircularIndicator(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -78,8 +131,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => const SignInMember() ));
-
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const SignInMember()));
                     },
                     child: Text(
                       'Admin',
