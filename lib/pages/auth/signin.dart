@@ -10,6 +10,7 @@ import 'package:widget_of_the_week/pages/auth/signinadmin.dart';
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
+import 'package:widget_of_the_week/screens/homepage.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key key}) : super(key: key);
@@ -35,6 +36,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonData = jsonDecode(response.body);
         Fluttertoast.showToast(msg: jsonData["message"]);
+        if (response.statusCode == 200) {
+          Navigator.push(context,
+              CupertinoPageRoute(builder: (context) => const HomePage()));
+        }
         _username.clear();
         _password.clear();
         setState(() {
