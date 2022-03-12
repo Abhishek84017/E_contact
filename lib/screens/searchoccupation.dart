@@ -239,111 +239,121 @@ class _SearchOccupationState extends State<SearchOccupation> {
                     padding: EdgeInsets.only(top: size.height / 3),
                     child: const Center(child: CircularIndicator()),
                   )
-                : Expanded(
-                    child: searchOccupation.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              var items = searchOccupation[index];
-                              return Card(
-                                shadowColor: Colors.black,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 10.w),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.h, horizontal: 10.w),
-                                  /*leading: CircleAvatar(
+                : occupationsDetail.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(top: size.height / 3),
+                        child: Text(
+                          'No Data Found',
+                          style: TextStyle(fontSize: 15.sp),
+                        ),
+                      )
+                    : Expanded(
+                        child: searchOccupation.isNotEmpty
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  var items = searchOccupation[index];
+                                  return Card(
+                                    shadowColor: Colors.black,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 10.w),
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10.h, horizontal: 10.w),
+                                      /*leading: CircleAvatar(
                               radius: 24.0,
                               backgroundImage: NetworkImage(
                                   'https://econtact.votersmanagement.com/${items.image}'),
                               backgroundColor: Colors.transparent,
                             ),*/
-                                  title: Text(items.name),
-                                  subtitle: Text(items.occupation),
-                                  trailing: Wrap(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () async {
-                                            if (await canLaunch(
-                                                'tel:${items.mobile}')) {
-                                              await launch(
-                                                  'tel:${items.mobile}');
-                                            }
-                                          },
-                                          icon: const Icon(
-                                            Icons.phone,
+                                      title: Text(items.name),
+                                      subtitle: Text(items.occupation),
+                                      trailing: Wrap(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {
+                                                if (await canLaunch(
+                                                    'tel:${items.mobile}')) {
+                                                  await launch(
+                                                      'tel:${items.mobile}');
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.phone,
+                                                color: Colors.blue,
+                                              )),
+                                          IconButton(
+                                            onPressed: () async {
+                                              if (await canLaunch(
+                                                  "https://wa.me/${items.mobile}")) {
+                                                await launch(
+                                                    "https://wa.me/+91${items.mobile}");
+                                              }
+                                            },
+                                            icon: const Icon(
+                                                FontAwesome.whatsapp),
                                             color: Colors.blue,
-                                          )),
-                                      IconButton(
-                                        onPressed: () async {
-                                          if (await canLaunch(
-                                              "https://wa.me/${items.mobile}")) {
-                                            await launch(
-                                                "https://wa.me/+91${items.mobile}");
-                                          }
-                                        },
-                                        icon: const Icon(FontAwesome.whatsapp),
-                                        color: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            itemCount: searchOccupation.length,
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              var items1 = occupationsDetail[index];
-                              return Card(
-                                shadowColor: Colors.black,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 10.w),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.h, horizontal: 10.w),
-                                  /*leading: CircleAvatar(
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: searchOccupation.length,
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  var items1 = occupationsDetail[index];
+                                  return Card(
+                                    shadowColor: Colors.black,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 10.w),
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10.h, horizontal: 10.w),
+                                      /*leading: CircleAvatar(
                               radius: 24.0,
                               backgroundImage: NetworkImage(
                                   'https://econtact.votersmanagement.com/${items.image}'),
                               backgroundColor: Colors.transparent,
                             ),*/
-                                  title: Text(items1.name),
-                                  subtitle: Text(items1.occupation),
-                                  trailing: Wrap(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () async {
-                                            if (await canLaunch(
-                                                'tel:${items1.mobile}')) {
-                                              await launch(
-                                                  'tel:${items1.mobile}');
-                                            }
-                                          },
-                                          icon: const Icon(
-                                            Icons.phone,
+                                      title: Text(items1.name),
+                                      subtitle: Text(items1.occupation),
+                                      trailing: Wrap(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {
+                                                if (await canLaunch(
+                                                    'tel:${items1.mobile}')) {
+                                                  await launch(
+                                                      'tel:${items1.mobile}');
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.phone,
+                                                color: Colors.blue,
+                                              )),
+                                          IconButton(
+                                            onPressed: () async {
+                                              if (await canLaunch(
+                                                  "https://wa.me/${items1.mobile}")) {
+                                                await launch(
+                                                    "https://wa.me/+91${items1.mobile}");
+                                              }
+                                            },
+                                            icon: const Icon(
+                                                FontAwesome.whatsapp),
                                             color: Colors.blue,
-                                          )),
-                                      IconButton(
-                                        onPressed: () async {
-                                          if (await canLaunch(
-                                              "https://wa.me/${items1.mobile}")) {
-                                            await launch(
-                                                "https://wa.me/+91${items1.mobile}");
-                                          }
-                                        },
-                                        icon: const Icon(FontAwesome.whatsapp),
-                                        color: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            itemCount: occupationsDetail.length,
-                          ),
-                  )
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: occupationsDetail.length,
+                              ),
+                      )
           ],
         ),
       ),
