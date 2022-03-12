@@ -6,6 +6,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:widget_of_the_week/screens/addmembers.dart';
 import 'package:widget_of_the_week/screens/member_details.dart';
 import 'package:widget_of_the_week/screens/profile.dart';
+import 'package:widget_of_the_week/screens/searchoccupation.dart';
 import 'package:widget_of_the_week/screens/send_messages.dart';
 import 'package:widget_of_the_week/screens/send_notification.dart';
 import 'package:widget_of_the_week/screens/send_whatsapp_messages.dart';
@@ -160,6 +161,12 @@ class _HomePageState extends State<HomePage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => const MemberDetails()));
+                      }
+                      if (item == 'Search Occupation') {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const SearchOccupation()));
                       }
                       if (item == 'Send Notification') {
                         Navigator.push(

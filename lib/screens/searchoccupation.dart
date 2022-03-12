@@ -10,7 +10,7 @@ import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 
-class MemberDetailsModel {
+class OccupationModel {
   int id;
   String code;
   String name;
@@ -48,7 +48,7 @@ class MemberDetailsModel {
   String deviceType;
   String proof;
 
-  MemberDetailsModel(
+  OccupationModel(
       {this.id,
       this.code,
       this.name,
@@ -86,7 +86,7 @@ class MemberDetailsModel {
       this.deviceType,
       this.proof});
 
-  MemberDetailsModel.fromJson(Map<String, dynamic> json) {
+  OccupationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
     name = json['name'];
@@ -167,28 +167,28 @@ class MemberDetailsModel {
   }
 }
 
-class MemberDetails extends StatefulWidget {
-  const MemberDetails({Key key}) : super(key: key);
+class SearchOccupation extends StatefulWidget {
+  const SearchOccupation({Key key}) : super(key: key);
 
   @override
-  State<MemberDetails> createState() => _MemberDetailsState();
+  State<SearchOccupation> createState() => _SearchOccupationState();
 }
 
-class _MemberDetailsState extends State<MemberDetails> {
+class _SearchOccupationState extends State<SearchOccupation> {
   final TextEditingController _occupationInput = TextEditingController();
-  List<MemberDetailsModel> occupationsDetail = <MemberDetailsModel>[];
-  List<MemberDetailsModel> searchMemberDetails = <MemberDetailsModel>[];
+  List<OccupationModel> occupationsDetail = <OccupationModel>[];
+  List<OccupationModel> searchOccupation = <OccupationModel>[];
   bool _isloading = true;
 
-  void _memberNameSearch(String newValue) {
-    searchMemberDetails = occupationsDetail
+  void _occupationSearch(String newValue) {
+    searchOccupation = occupationsDetail
         .where((element) =>
-            element.name.toLowerCase().contains(newValue.toLowerCase()))
+            element.occupation.toLowerCase().contains(newValue.toLowerCase()))
         .toList();
     setState(() {});
   }
 
-  void _getMemberDetails() async {
+  void _getOccupation() async {
     final response = await http.get(
         Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
     try {
@@ -197,7 +197,7 @@ class _MemberDetailsState extends State<MemberDetails> {
 
         if (jsonData['data'] != null) {
           jsonData['data'].forEach((v) {
-            occupationsDetail.add(MemberDetailsModel.fromJson(v));
+            occupationsDetail.add(OccupationModel.fromJson(v));
           });
         }
         setState(() {
@@ -215,7 +215,7 @@ class _MemberDetailsState extends State<MemberDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getMemberDetails();
+    _getOccupation();
   }
 
   @override
@@ -224,13 +224,13 @@ class _MemberDetailsState extends State<MemberDetails> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Search By MemberName'),
+          title: const Text('Search By Occupation'),
         ),
         body: Column(
           children: [
             InputField(
               controller: _occupationInput,
-              onChanged: _memberNameSearch,
+              onChanged: _occupationSearch,
               inputDecoration:
                   const InputDecoration(hintText: 'Search By Occupation'),
             ),
@@ -240,11 +240,11 @@ class _MemberDetailsState extends State<MemberDetails> {
                     child: const Center(child: CircularIndicator()),
                   )
                 : Expanded(
-                    child: searchMemberDetails.isNotEmpty
+                    child: searchOccupation.isNotEmpty
                         ? ListView.builder(
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              var items = searchMemberDetails[index];
+                              var items = searchOccupation[index];
                               return Card(
                                 shadowColor: Colors.black,
                                 margin: EdgeInsets.symmetric(
@@ -290,7 +290,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                                 ),
                               );
                             },
-                            itemCount: searchMemberDetails.length,
+                            itemCount: searchOccupation.length,
                           )
                         : ListView.builder(
                             shrinkWrap: true,
