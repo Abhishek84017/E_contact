@@ -232,7 +232,7 @@ class _MemberDetailsState extends State<MemberDetails> {
               controller: _occupationInput,
               onChanged: _memberNameSearch,
               inputDecoration:
-                  const InputDecoration(hintText: 'Search By Occupation'),
+                  const InputDecoration(hintText: 'Search By MemberName'),
             ),
             _isloading == true
                 ? Padding(
