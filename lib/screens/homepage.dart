@@ -13,7 +13,9 @@ import 'package:widget_of_the_week/screens/send_whatsapp_messages.dart';
 import 'package:widget_of_the_week/constant/globle.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+
+  const HomePage({Key key, this.mobile}) : super(key: key);
+  final String mobile;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool finalAdminData;
+  String homePageMobileNo;
 
   final List<String> name = [
     "My Profile",
@@ -66,6 +69,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future checkAdmin() async {
+    homePageMobileNo = widget.mobile;
     bool adminValue = kSharedPreferences.getBool('Admin');
     setState(() {
       finalAdminData = adminValue;
@@ -109,7 +113,10 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(
               icon: const Icon(Icons.notifications),
-              onPressed: () {},
+              onPressed: () {
+                print('hello');
+                print(widget.mobile);
+              },
               splashColor: Colors.red,
             ),
           ],
@@ -148,14 +155,11 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => const MyProfile()));
+                                builder: (context) => MyProfile(
+                                      mobileCheck:homePageMobileNo,
+                                    )));
                       }
-                      if (item == 'My Profile') {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => const MyProfile()));
-                      }
+
                       if (item == 'Member Details') {
                         Navigator.push(
                             context,
@@ -166,7 +170,8 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => const SearchOccupation()));
+                                builder: (context) =>
+                                    const SearchOccupation()));
                       }
                       if (item == 'Send Notification') {
                         Navigator.push(

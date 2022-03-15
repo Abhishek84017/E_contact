@@ -198,6 +198,7 @@ class _MemberDetailsState extends State<MemberDetails> {
         if (jsonData['data'] != null) {
           jsonData['data'].forEach((v) {
             memberDetail.add(MemberDetailsModel.fromJson(v));
+            print(memberDetail);
           });
         }
         setState(() {

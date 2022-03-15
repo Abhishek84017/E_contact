@@ -21,10 +21,13 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool isloading = true;
+
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
+   String userName;
 
   Future _SignInMember() async {
+    userName = _username.text;
     var data = <String, dynamic>{
       "username": _username.text,
       "password": _password.text,
@@ -37,8 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         final jsonData = jsonDecode(response.body);
         Fluttertoast.showToast(msg: jsonData["message"]);
         if (response.statusCode == 200) {
-          Navigator.push(context,
-              CupertinoPageRoute(builder: (context) => const HomePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  HomePage(mobile: userName)));
         }
         _username.clear();
         _password.clear();
