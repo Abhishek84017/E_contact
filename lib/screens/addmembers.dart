@@ -21,10 +21,6 @@ class AddMembers extends StatefulWidget {
 class _AddMembersState extends State<AddMembers> {
   final ImagePicker _picker = ImagePicker();
   File imageFile;
-  String _selectedImage;
-
-  // File _image;
-
   bool _isloading = true;
   DateTime _selectedDate = DateTime.now();
   DateTime _selectedJoining = DateTime.now();
@@ -61,7 +57,6 @@ class _AddMembersState extends State<AddMembers> {
     if (image != null) {
       setState(() {
         imageFile = File(image.path);
-        //_selectedImage = jsonEncode(imageFile.readAsBytesSync());
       });
     }
   }
@@ -103,13 +98,9 @@ class _AddMembersState extends State<AddMembers> {
       "device_type": "ios",
       "proof": _proof.text,
     };
-
-    //final response = await http.post(Uri.https('econtact.votersmanagement.com', 'api/add-member'), body: data);
-    final request = http.MultipartRequest(
-        'POST', Uri.https('econtact.votersmanagement.com', '/api/add-member'));
+    final request = http.MultipartRequest('POST', Uri.https('econtact.votersmanagement.com', '/api/add-member'));
     request.fields.addAll(data);
-    request.files
-        .add(await http.MultipartFile.fromPath("image", imageFile.path));
+    request.files.add(await http.MultipartFile.fromPath("image", imageFile.path));
     final streamResponse = await request.send();
     try {
       if (streamResponse.statusCode == 200) {
@@ -117,7 +108,7 @@ class _AddMembersState extends State<AddMembers> {
             jsonDecode(await streamResponse.stream.bytesToString());
         Fluttertoast.showToast(
             msg: jsonData['message'], backgroundColor: Colors.black);
-        /*_codeNo.clear();
+        _codeNo.clear();
         _fullName.clear();
         _gotra.clear();
         genderValue = "";
@@ -143,7 +134,8 @@ class _AddMembersState extends State<AddMembers> {
         _reference.clear();
         _aadharNo.clear();
         _proof.clear();
-        maritalValue == '';*/
+        maritalValue == '';
+        _image.clear();
         setState(() {
           _isloading = true;
         });
@@ -222,7 +214,6 @@ class _AddMembersState extends State<AddMembers> {
 
   @override
   Widget build(BuildContext context) {
-    // _isloading= true;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -669,6 +660,11 @@ class _AddMembersState extends State<AddMembers> {
                               msg: 'Marital Status  is required');
                           return;
                         }
+                        if(imageFile.path.isEmpty)
+                          {
+                            Fluttertoast.showToast(msg: 'Image Required');
+                            return;
+                          }
                         setState(() {
                           _isloading = false;
                         });

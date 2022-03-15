@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           return child;
         });
       },
-      home: const AddMembers(),
+      home: const WelcomeScreen(),
     );
   }
 }
