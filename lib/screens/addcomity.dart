@@ -1,126 +1,76 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
+import 'package:widget_of_the_week/pages/widgets/text_field.dart';
+import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ComityDetailsModel {
-  int id;
-  String title;
-  String logo;
-  String insertedIp;
-
-  ComityDetailsModel({this.id, this.title, this.logo, this.insertedIp});
-
-  ComityDetailsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    logo = json['logo'];
-    insertedIp = json['inserted_ip'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['title'] = title;
-    data['logo'] = logo;
-    data['inserted_ip'] = insertedIp;
-    return data;
-  }
-}
-
-class ComityDetails extends StatefulWidget {
-  const ComityDetails({Key key}) : super(key: key);
+class AddComity extends StatefulWidget {
+  const AddComity({Key key}) : super(key: key);
 
   @override
-  State<ComityDetails> createState() => _ComityDetailsState();
+  State<AddComity> createState() => _AddComityState();
 }
 
-class _ComityDetailsState extends State<ComityDetails> {
+class _AddComityState extends State<AddComity> {
   bool _isLoading = true;
-  List<ComityDetailsModel> comityDetail = <ComityDetailsModel>[];
+  final TextEditingController _title = TextEditingController();
 
-  Future _getComityDetails() async {
-    print('hello');
-    final response = await http.get(Uri.parse(
-        'https://econtact.votersmanagement.com/api/get-all-committee'));
+  Future _addComity() async {
+    var data = <String, dynamic>{
+      "title": _title.text,
+      "logo": "assets/admin/images/20220316104648.png",
+      "inserted_ip": "49.36.95.131"
+    };
+    final reponse = await http.post(
+        Uri.https('econtact.votersmanagement.com', 'api/add-committee'),
+        body: data);
+
     try {
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        if (jsonData['data'] != null) {
-          jsonData['data'].forEach((v) {
-            comityDetail.add(ComityDetailsModel.fromJson(v));
-          });
-          setState(() {
-            _isLoading = false;
-          });
-        }
+      if (reponse.statusCode == 200) {
+        Fluttertoast.showToast(msg: 'Comity Added');
+        setState(() {
+          _isLoading = true;
+        });
       }
     } on SocketException catch (_) {
-      Fluttertoast.showToast(msg: 'Internet Required');
+      Fluttertoast.showToast(msg: 'Internet Not Connected');
     } catch (_) {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getComityDetails();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    //s_isLoading = true;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Comity Details'),
+        title: const Text('Add Comity'),
       ),
-      body: _isLoading
-          ? const CircularIndicator()
-          : Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: comityDetail.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: MediaQuery.of(context).orientation ==
-                                  Orientation.landscape
-                              ? 3
-                              : 2,
-                          crossAxisSpacing: 1.w,
-                          mainAxisSpacing: 1.w,
-                          childAspectRatio: (2 / 1.3)),
-                      itemBuilder: (context, index) {
-                        var item = comityDetail[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Card(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(Icons.group),
-                                Text(item.title),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-                SignInButton(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InputField(
+            controller: _title,
+            inputDecoration: const InputDecoration(hintText: 'Title'),
+          ),
+          _isLoading
+              ? SignInButton(
                   text: 'Add Comity',
                   width: 0.75.sw,
                   callback: () {
-                    print('hello');
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    _addComity();
                   },
                 )
-              ],
-            ),
+              : const CircularIndicator(),
+        ],
+      ),
     );
   }
 }
