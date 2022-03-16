@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:widget_of_the_week/constant/palette.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:widget_of_the_week/screens/addcomity.dart';
 import 'package:widget_of_the_week/screens/addmembers.dart';
 import 'package:widget_of_the_week/screens/member_details.dart';
 import 'package:widget_of_the_week/screens/profile.dart';
@@ -150,6 +151,12 @@ class _HomePageState extends State<HomePage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => const AddMembers()));
+                      }
+                      if (item == 'Comity Details') {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const ComityDetails()));
                       }
                       if (item == 'My Profile') {
                         Navigator.push(
