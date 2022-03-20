@@ -9,6 +9,7 @@ import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:widget_of_the_week/screens/addcomity.dart';
+import 'package:widget_of_the_week/screens/comitymemberdetails.dart';
 
 class ComityDetailsModel {
   int id;
@@ -98,18 +99,21 @@ class _ComityDetailsState extends State<ComityDetails> {
                         var item = comityDetail[index];
                         return Padding(
                           padding: const EdgeInsets.all(10),
-                          child: Card(
-                            shadowColor: Colors.white,
-                            elevation: 10,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(Icons.group),
-                                Text(item.title),
-                              ],
+                          child: InkWell(
+                            onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => const ComityMemberDetails() )),
+                            child: Card(
+                              shadowColor: Colors.white,
+                              elevation: 10,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(Icons.group),
+                                  Text(item.title),
+                                ],
+                              ),
                             ),
                           ),
                         );

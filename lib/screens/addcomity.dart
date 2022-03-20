@@ -28,7 +28,8 @@ class _AddComityState extends State<AddComity> {
     final reponse = await http.post(
         Uri.https('econtact.votersmanagement.com', 'api/add-committee'),
         body: data);
-
+     print(reponse.statusCode);
+     print(reponse.request);
     try {
       if (reponse.statusCode == 200) {
         Fluttertoast.showToast(msg: 'Comity Added');
