@@ -187,6 +187,7 @@ class _MyProfileState extends State<MyProfile> {
 
   File imageFile;
   bool _isLoading = true;
+  bool _imageLoading = false;
   List<Map<String, dynamic>> _profileData;
 
   // File _image;
@@ -208,6 +209,9 @@ class _MyProfileState extends State<MyProfile> {
                         _upLoadImage();
                         Navigator.pop(context, true);
                         FocusScope.of(context).unfocus();
+                        setState(() {
+                          _imageLoading = true;
+                        });
                       },
                     ),
                     TextButton(
@@ -303,29 +307,33 @@ class _MyProfileState extends State<MyProfile> {
                           children: [
                             GestureDetector(
                               onTap: _getImage,
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      "http://econtact.votersmanagement.com/${profileDetail[0].image}",
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(50)),
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
+                              child: _imageLoading == false
+                                  ? ClipOval(
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            "http://econtact.votersmanagement.com/${profileDetail[0].image}",
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50)),
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                       ),
-                                    ),
-                                  ),
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              ),
+                                    )
+                                  : const CircularIndicator(),
                             ),
                             Positioned(
                                 top: 50.h,
