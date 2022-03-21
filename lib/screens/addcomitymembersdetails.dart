@@ -16,7 +16,7 @@ class AddComityMemberDetail extends StatefulWidget {
 }
 
 class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
-  bool _isLoading = false;
+  bool _isLoading = true;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _mobile = TextEditingController();
 
@@ -35,6 +35,9 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
         Fluttertoast.showToast(msg: jsonData['message']);
         _name.clear();
         _mobile.clear();
+         setState(() {
+           _isLoading = true;
+         });
       }
     } on SocketException catch (_) {
       Fluttertoast.showToast(msg: 'Internet Connection required');
@@ -45,7 +48,6 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
 
   @override
   Widget build(BuildContext context) {
-    _isLoading = false;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Member Detail'),
@@ -62,7 +64,7 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
             inputDecoration: const InputDecoration(hintText: 'Mobile No'),
             keyboardType: TextInputType.number,
           ),
-          _isLoading == false
+          _isLoading == true
               ? SignInButton(
                   text: 'Add Member Detail',
                   width: 0.95.sw,
@@ -81,7 +83,7 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
                       return;
                     }
                     setState(() {
-                      _isLoading = true;
+                      _isLoading = false;
                     });
                     _addMemberDetail();
                   },
