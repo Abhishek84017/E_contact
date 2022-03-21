@@ -197,9 +197,10 @@ class _MyProfileState extends State<MyProfile> {
     }
   }
 
-  void _getMemberDetails() async {
+  Future _getMemberDetails() async {
     final response = await http.get(
         Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
+    print(response.statusCode);
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

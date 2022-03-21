@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   String homePageMobileNo;
 
   final List<String> name = [
-    "My Profile",
     "Comity Details",
     "Member Details",
     'Search Occupation',
@@ -45,7 +44,6 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<IconData> homeScreenIcons = [
-    FontAwesome.user,
     FontAwesome.group,
     FontAwesome.address_book,
     FontAwesome.search,
