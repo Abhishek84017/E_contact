@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
+import 'package:widget_of_the_week/screens/homepage.dart';
 
 class ProfileModel {
   int id;
@@ -188,12 +190,36 @@ class _MyProfileState extends State<MyProfile> {
   List<Map<String, dynamic>> _profileData;
 
   // File _image;
-  _getImage() async {
+  Future _getImage() async {
     final XFile image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         imageFile = File(image.path);
       });
+      if (imageFile.path.isNotEmpty) {
+        return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('Do you want Update Image'),
+                  actions: [
+                    TextButton(
+                      child: const Text('Yes'),
+                      onPressed: () {
+                        _upLoadImage();
+                        Navigator.pop(context, true);
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('No'),
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                  ],
+                ));
+      }
     }
   }
 
@@ -220,6 +246,27 @@ class _MyProfileState extends State<MyProfile> {
       }
     } on SocketException catch (_) {
       Fluttertoast.showToast(msg: 'Internet Connection Required');
+    } catch (_) {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
+  Future _upLoadImage() async {
+    var data = <String, String>{
+      "id": profileDetail[0].id.toString(),
+    };
+    final request = await http.MultipartRequest('POST',
+        Uri.http('econtact.votersmanagement.com', 'api/upload-member-image'));
+    request.fields.addAll(data);
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+    var response = await request.send();
+    try {
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(msg: 'Image Uploaded');
+        Navigator.pop(context, true);
+      }
     } catch (_) {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
@@ -256,14 +303,7 @@ class _MyProfileState extends State<MyProfile> {
                           children: [
                             GestureDetector(
                               onTap: _getImage,
-                              child: /*CircleAvatar(
-                          radius: 48.r,
-                          backgroundImage: profileDetail[0].image == null
-                              ? const AssetImage('assests/images/dp.png')
-                              : NetworkImage('https://econtact.votersmanagement.com/${profileDetail[0].image}'),
-                          backgroundColor: Colors.transparent,
-                        ),*/
-                                  ClipOval(
+                              child: ClipOval(
                                 child: CachedNetworkImage(
                                   imageUrl:
                                       "http://econtact.votersmanagement.com/${profileDetail[0].image}",

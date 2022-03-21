@@ -14,7 +14,6 @@ import 'package:widget_of_the_week/screens/send_whatsapp_messages.dart';
 import 'package:widget_of_the_week/constant/globle.dart';
 
 class HomePage extends StatefulWidget {
-
   const HomePage({Key key, this.mobile}) : super(key: key);
   final String mobile;
 
@@ -87,11 +86,15 @@ class _HomePageState extends State<HomePage> {
                     kSharedPreferences.clear();
                     name.clear();
                     Navigator.pop(context, true);
+                    FocusScope.of(context).unfocus();
                   },
                 ),
                 TextButton(
                   child: const Text('No'),
-                  onPressed: () => Navigator.pop(context, false),
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                    FocusScope.of(context).unfocus();
+                  },
                 ),
               ],
             ));
@@ -162,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => MyProfile(
-                                      mobileCheck:homePageMobileNo,
+                                      mobileCheck: homePageMobileNo,
                                     )));
                       }
 
