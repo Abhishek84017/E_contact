@@ -9,7 +9,9 @@ import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 
 class AddComityMemberDetail extends StatefulWidget {
-  const AddComityMemberDetail({Key key}) : super(key: key);
+  final int comityMemberId;
+
+  const AddComityMemberDetail({Key key, this.comityMemberId}) : super(key: key);
 
   @override
   State<AddComityMemberDetail> createState() => _AddComityMemberDetailState();
@@ -17,27 +19,29 @@ class AddComityMemberDetail extends StatefulWidget {
 
 class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
   bool _isLoading = true;
+
   final TextEditingController _name = TextEditingController();
   final TextEditingController _mobile = TextEditingController();
 
   Future _addMemberDetail() async {
     var data = <String, dynamic>{
-      "committee": "1",
+      "committee": widget.comityMemberId.toString(),
       "name": _name.text,
       "mobile": _mobile.text,
     };
     final response = await http.post(
         Uri.https('econtact.votersmanagement.com', 'api/add-contacts'),
         body: data);
+
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         Fluttertoast.showToast(msg: jsonData['message']);
         _name.clear();
         _mobile.clear();
-         setState(() {
-           _isLoading = true;
-         });
+        setState(() {
+          _isLoading = true;
+        });
       }
     } on SocketException catch (_) {
       Fluttertoast.showToast(msg: 'Internet Connection required');
@@ -77,8 +81,8 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
                       Fluttertoast.showToast(msg: 'Name Required');
                       return;
                     }
-                    if(!RegExp(r"^(?:[+0]9)?[0-9]{10}$").hasMatch(_mobile.text))
-                    {
+                    if (!RegExp(r"^(?:[+0]9)?[0-9]{10}$")
+                        .hasMatch(_mobile.text)) {
                       Fluttertoast.showToast(msg: 'Invalid Mobile Number');
                       return;
                     }

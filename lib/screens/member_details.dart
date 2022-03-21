@@ -308,8 +308,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                                   var items1 = memberDetail[index];
                                   return Card(
                                     shadowColor: Colors.black,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 10.w),
+                                    margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
                                     child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.h, horizontal: 10.w),

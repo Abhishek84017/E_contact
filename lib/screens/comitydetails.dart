@@ -48,7 +48,7 @@ class _ComityDetailsState extends State<ComityDetails> {
   List<ComityDetailsModel> comityDetail = <ComityDetailsModel>[];
 
   Future _getComityDetails() async {
-    print('hello');
+
     final response = await http.get(Uri.parse(
         'https://econtact.votersmanagement.com/api/get-all-committee'));
     try {
@@ -100,7 +100,7 @@ class _ComityDetailsState extends State<ComityDetails> {
                         return Padding(
                           padding: const EdgeInsets.all(10),
                           child: InkWell(
-                            onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => const ComityMemberDetails() )),
+                            onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) =>  ComityMemberDetails(comityId: item.id,) )),
                             child: Card(
                               shadowColor: Colors.white,
                               elevation: 10,
