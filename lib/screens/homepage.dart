@@ -116,9 +116,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: const Icon(Icons.notifications),
               onPressed: () {
-                print('hello');
-                print(widget.mobile);
-              },
+                },
               splashColor: Colors.red,
             ),
           ],

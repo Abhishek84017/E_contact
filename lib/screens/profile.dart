@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +171,6 @@ class ProfileModel {
 
 class MyProfile extends StatefulWidget {
   final String mobileCheck;
-
   const MyProfile({Key key, this.mobileCheck}) : super(key: key);
 
   @override
@@ -184,7 +182,6 @@ class _MyProfileState extends State<MyProfile> {
   List<ProfileModel> memberDetail = <ProfileModel>[];
   List<ProfileModel> profileDetail = <ProfileModel>[];
   List<String> data;
-
   File imageFile;
   bool _isLoading = true;
   bool _imageLoading = false;
@@ -230,7 +227,7 @@ class _MyProfileState extends State<MyProfile> {
   Future _getMemberDetails() async {
     final response = await http.get(
         Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
-    print(response.statusCode);
+
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
