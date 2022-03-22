@@ -81,6 +81,7 @@ class _ComityDetailsState extends State<ComityDetails> {
     if (image != null) {
       setState(() {
         imageFile = File(image.path);
+        print(imageFile.path.split('/').last);
       });
     }
   }
@@ -169,7 +170,7 @@ class _ComityDetailsState extends State<ComityDetails> {
             text: 'Add Comity',
             width: 0.95.sw,
             callback: () async  {
-              await  showModalBottomSheet(context: context, builder: (context) {
+             return  await  showModalBottomSheet(context: context, builder: (context) {
                 return Column(
                   children: [
                     InputField(
@@ -182,7 +183,7 @@ class _ComityDetailsState extends State<ComityDetails> {
                       maxLines: 2,
                       onTap: (){
                         _getImage();
-                      },
+                        },
                       text: 'Logo',
                       controller: _image,
                       inputDecoration: InputDecoration(

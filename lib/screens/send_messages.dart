@@ -1,8 +1,13 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
+
+
 
 class SendMessages extends StatefulWidget {
   const SendMessages({Key key}) : super(key: key);
@@ -13,7 +18,6 @@ class SendMessages extends StatefulWidget {
 
 class _SendMessagesState extends State<SendMessages> {
   final TextEditingController _textmessage = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,8 +52,11 @@ class _SendMessagesState extends State<SendMessages> {
               alignment: Alignment.center,
               child: Row(
                 children: [
-                  const SignInButton(
+                   SignInButton(
                     text: 'Send',
+                    callback: (){
+                      Fluttertoast.showToast(msg: 'hello');
+                    },
                   ),
                   const SignInButton(
                     text: 'Send To Group',

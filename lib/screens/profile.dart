@@ -197,7 +197,7 @@ class _MyProfileState extends State<MyProfile> {
       if (imageFile.path.isNotEmpty) {
         return await showDialog(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (_) => AlertDialog(
                   title: const Text('Do you want Update Image'),
                   actions: [
                     TextButton(

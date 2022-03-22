@@ -189,8 +189,7 @@ class _MemberDetailsState extends State<MemberDetails> {
   }
 
   void _getMemberDetails() async {
-    final response = await http.get(
-        Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
+    final response = await http.get(Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
