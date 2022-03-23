@@ -72,42 +72,43 @@ class MemberDetailsModel {
   String deviceType;
   String proof;
 
-  MemberDetailsModel({this.id,
-    this.code,
-    this.name,
-    this.gotra,
-    this.gender,
-    this.age,
-    this.bloodGroup,
-    this.dateOfBirth,
-    this.mobile,
-    this.email,
-    this.address,
-    this.firmName,
-    this.officeAddress,
-    this.occupation,
-    this.occupationDetail,
-    this.officeContact,
-    this.image,
-    this.nativePlace,
-    this.birthPlace,
-    this.dateOfJoin,
-    this.socialGroup,
-    this.status,
-    this.barcode,
-    this.password,
-    this.anniversary,
-    this.fatherName,
-    this.motherName,
-    this.officeEmail,
-    this.reference,
-    this.specialAchievement,
-    this.whyJoin,
-    this.aadharNo,
-    this.token,
-    this.marrital,
-    this.deviceType,
-    this.proof});
+  MemberDetailsModel(
+      {this.id,
+      this.code,
+      this.name,
+      this.gotra,
+      this.gender,
+      this.age,
+      this.bloodGroup,
+      this.dateOfBirth,
+      this.mobile,
+      this.email,
+      this.address,
+      this.firmName,
+      this.officeAddress,
+      this.occupation,
+      this.occupationDetail,
+      this.officeContact,
+      this.image,
+      this.nativePlace,
+      this.birthPlace,
+      this.dateOfJoin,
+      this.socialGroup,
+      this.status,
+      this.barcode,
+      this.password,
+      this.anniversary,
+      this.fatherName,
+      this.motherName,
+      this.officeEmail,
+      this.reference,
+      this.specialAchievement,
+      this.whyJoin,
+      this.aadharNo,
+      this.token,
+      this.marrital,
+      this.deviceType,
+      this.proof});
 
   MemberDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -223,8 +224,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
             print(i);
             print(mobileNo.length);
             final request = await http.get(Uri.parse(
-                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${mobileNo[i]}&messageType=text&message=${_textmessage
-                    .text}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
+                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${mobileNo[i]}&messageType=text&message=${_textmessage.text}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
             if (i - mobileNo.length == -1) {
               try {
                 if (request.statusCode == 200) {
@@ -253,8 +253,6 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -273,7 +271,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                     'Type Message',
                     textAlign: TextAlign.left,
                     style:
-                    TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                   ),
                 )),
             InputField(
@@ -289,22 +287,22 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
               children: [
                 _isMemberSend == true
                     ? SignInButton(
-                  text: 'Send',
-                  callback: () {
-                    if (_textmessage.text.isEmpty) {
-                      Fluttertoast.showToast(msg: 'Enter Message');
-                      return;
-                    }
-                    setState(() {
-                      _isMemberSend = false;
-                    });
-                    _sendWhatsAppMessage();
-                  },
-                )
+                        text: 'Send',
+                        callback: () {
+                          if (_textmessage.text.isEmpty) {
+                            Fluttertoast.showToast(msg: 'Enter Message');
+                            return;
+                          }
+                          setState(() {
+                            _isMemberSend = false;
+                          });
+                          _sendWhatsAppMessage();
+                        },
+                      )
                     : Padding(
-                  padding: EdgeInsets.only(left: 20.w),
-                  child: const CircularIndicator(),
-                ),
+                        padding: EdgeInsets.only(left: 20.w),
+                        child: const CircularIndicator(),
+                      ),
                 SignInButton(
                   text: 'Send To Group',
                   callback: () async {
@@ -334,6 +332,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
 
 class ShowData extends StatefulWidget {
   const ShowData({Key key}) : super(key: key);
+
   @override
   State<ShowData> createState() => _ShowDataState();
 }
@@ -342,6 +341,8 @@ class _ShowDataState extends State<ShowData> {
   List<ComityDetailsModel> comityDetail = <ComityDetailsModel>[];
   List<String> comityNames = <String>[];
   bool _isComityLoading = true;
+
+  Map<int, bool> answer = {};
 
   Future _getComity() async {
     comityDetail.clear();
@@ -366,37 +367,45 @@ class _ShowDataState extends State<ShowData> {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
   }
-   @override
-   void initState(){
+
+  @override
+  void initState() {
     super.initState();
     _getComity();
-   }
+  }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-     bool _isSelected = false;
-    return _isComityLoading ? const CircularIndicator() :  AlertDialog(
-          content: SizedBox(
-              height: 500,
-              width: 300,
-              child: StatefulBuilder(
-                  builder: (context, setState) {
-                    return ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: comityNames.length,
-                        itemBuilder: (context, index) {
-                          var items = comityNames[index];
-                          return CheckboxListTile(
-                              title: Text(items.toString()),
-                              value: _isSelected,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  _isSelected = newValue;
-                                });
+    bool _isSelected = false;
+    return _isComityLoading
+        ? const CircularIndicator()
+        : AlertDialog(
+            content: SizedBox(
+                height: 500,
+                width: 300,
+                child: StatefulBuilder(builder: (context, setState) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: comityNames.length,
+                    itemBuilder: (context, index) {
+                      var items = comityNames[index];
+                      return StatefulBuilder(builder: (context, setState) {
+                        return CheckboxListTile(
+                            title: Text(items.toString()),
+                            value: answer[index] ?? false,
+                            onChanged: (bool newValue) {
+                              setState(() {
+                                answer[index] = newValue;
                               });
-                        }, separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.grey,),);
-                  })),
-        );
+                            });
+                      });
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                      color: Colors.grey,
+                    ),
+                  );
+                })),
+          );
   }
 }
-
