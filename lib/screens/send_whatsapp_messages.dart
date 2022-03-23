@@ -9,6 +9,31 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+class ComityDetailsModel {
+  int id;
+  String title;
+  String logo;
+  String insertedIp;
+
+  ComityDetailsModel({this.id, this.title, this.logo, this.insertedIp});
+
+  ComityDetailsModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    logo = json['logo'];
+    insertedIp = json['inserted_ip'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['logo'] = logo;
+    data['inserted_ip'] = insertedIp;
+    return data;
+  }
+}
+
 class MemberDetailsModel {
   int id;
   String code;
@@ -47,43 +72,42 @@ class MemberDetailsModel {
   String deviceType;
   String proof;
 
-  MemberDetailsModel(
-      {this.id,
-      this.code,
-      this.name,
-      this.gotra,
-      this.gender,
-      this.age,
-      this.bloodGroup,
-      this.dateOfBirth,
-      this.mobile,
-      this.email,
-      this.address,
-      this.firmName,
-      this.officeAddress,
-      this.occupation,
-      this.occupationDetail,
-      this.officeContact,
-      this.image,
-      this.nativePlace,
-      this.birthPlace,
-      this.dateOfJoin,
-      this.socialGroup,
-      this.status,
-      this.barcode,
-      this.password,
-      this.anniversary,
-      this.fatherName,
-      this.motherName,
-      this.officeEmail,
-      this.reference,
-      this.specialAchievement,
-      this.whyJoin,
-      this.aadharNo,
-      this.token,
-      this.marrital,
-      this.deviceType,
-      this.proof});
+  MemberDetailsModel({this.id,
+    this.code,
+    this.name,
+    this.gotra,
+    this.gender,
+    this.age,
+    this.bloodGroup,
+    this.dateOfBirth,
+    this.mobile,
+    this.email,
+    this.address,
+    this.firmName,
+    this.officeAddress,
+    this.occupation,
+    this.occupationDetail,
+    this.officeContact,
+    this.image,
+    this.nativePlace,
+    this.birthPlace,
+    this.dateOfJoin,
+    this.socialGroup,
+    this.status,
+    this.barcode,
+    this.password,
+    this.anniversary,
+    this.fatherName,
+    this.motherName,
+    this.officeEmail,
+    this.reference,
+    this.specialAchievement,
+    this.whyJoin,
+    this.aadharNo,
+    this.token,
+    this.marrital,
+    this.deviceType,
+    this.proof});
 
   MemberDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -180,6 +204,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
   List<String> mobileNo = <String>[];
 
   Future _sendWhatsAppMessage() async {
+    Fluttertoast.showToast(msg: 'helllo');
     memberDetail.clear();
     final response = await http.get(
         Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
@@ -193,25 +218,33 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
           });
         }
         mobileNo = memberDetail.map((e) => e.mobile).toList();
-
         if (mobileNo.isNotEmpty) {
           for (var i = 0; i < mobileNo.length; i++) {
-            final response = await http.get(Uri.parse(
-                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${mobileNo[i]}&messageType=text&message=${_textmessage.text}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
-          }
-          try {
-            if (response.statusCode == 200) {
-              Fluttertoast.showToast(msg: 'Message Send To All Members');
-              _textmessage.clear();
-              setState(() {
-                _isMemberSend = true;
-              });
+            print(i);
+            print(mobileNo.length);
+            final request = await http.get(Uri.parse(
+                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${mobileNo[i]}&messageType=text&message=${_textmessage
+                    .text}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
+            if (i - mobileNo.length == -1) {
+              try {
+                if (request.statusCode == 200) {
+                  final jsonData = jsonDecode(request.body);
+                  if (jsonData['statusCode'] == 862) {
+                    Fluttertoast.showToast(msg: jsonData['message']);
+                  } else if (jsonData['statusCode'] == 1) {
+                    Fluttertoast.showToast(msg: jsonData['successMessage']);
+                  }
+                  _textmessage.clear();
+                  setState(() {
+                    _isMemberSend = true;
+                  });
+                }
+              } catch (_) {
+                Fluttertoast.showToast(msg: 'Something Went Wrong');
+              }
             }
-          } catch (_) {
-            Fluttertoast.showToast(msg: 'Something Went Wrong');
           }
         }
-        setState(() {});
       }
     } on SocketException catch (_) {
       Fluttertoast.showToast(msg: 'Internet Connection Required');
@@ -219,6 +252,8 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +273,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                     'Type Message',
                     textAlign: TextAlign.left,
                     style:
-                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                   ),
                 )),
             InputField(
@@ -254,24 +289,35 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
               children: [
                 _isMemberSend == true
                     ? SignInButton(
-                        text: 'Send',
-                        callback: () {
-                          if (_textmessage.text.isEmpty) {
-                            Fluttertoast.showToast(msg: 'Enter Message');
-                            return;
-                          }
-                          setState(() {
-                            _isMemberSend = false;
-                          });
-                          _sendWhatsAppMessage();
-                        },
-                      )
+                  text: 'Send',
+                  callback: () {
+                    if (_textmessage.text.isEmpty) {
+                      Fluttertoast.showToast(msg: 'Enter Message');
+                      return;
+                    }
+                    setState(() {
+                      _isMemberSend = false;
+                    });
+                    _sendWhatsAppMessage();
+                  },
+                )
                     : Padding(
-                        padding: EdgeInsets.only(left: 20.w),
-                        child: const CircularIndicator(),
-                      ),
-                const SignInButton(
+                  padding: EdgeInsets.only(left: 20.w),
+                  child: const CircularIndicator(),
+                ),
+                SignInButton(
                   text: 'Send To Group',
+                  callback: () async {
+                    if (_textmessage.text.isEmpty) {
+                      Fluttertoast.showToast(msg: 'Enter Message');
+                      return;
+                    }
+                    return await showDialog(
+                        context: context,
+                        builder: (_) {
+                          return const ShowData();
+                        });
+                  },
                 ),
                 SignInButton(
                   text: 'Clear',
@@ -285,3 +331,72 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
     );
   }
 }
+
+class ShowData extends StatefulWidget {
+  const ShowData({Key key}) : super(key: key);
+  @override
+  State<ShowData> createState() => _ShowDataState();
+}
+
+class _ShowDataState extends State<ShowData> {
+  List<ComityDetailsModel> comityDetail = <ComityDetailsModel>[];
+  List<String> comityNames = <String>[];
+  bool _isComityLoading = true;
+
+  Future _getComity() async {
+    comityDetail.clear();
+    final response = await http.get(Uri.parse(
+        'https://econtact.votersmanagement.com/api/get-all-committee'));
+    try {
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData['data'] != null) {
+          jsonData['data'].forEach((v) {
+            comityDetail.add(ComityDetailsModel.fromJson(v));
+          });
+          comityNames = comityDetail.map((e) => e.title).toList();
+          setState(() {
+            _isComityLoading = false;
+          });
+        }
+      }
+    } on SocketException catch (_) {
+      Fluttertoast.showToast(msg: 'Internet Required');
+    } catch (_) {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+   @override
+   void initState(){
+    super.initState();
+    _getComity();
+   }
+
+   @override
+  Widget build(BuildContext context) {
+     bool _isSelected = false;
+    return _isComityLoading ? const CircularIndicator() :  AlertDialog(
+          content: SizedBox(
+              height: 500,
+              width: 300,
+              child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: comityNames.length,
+                        itemBuilder: (context, index) {
+                          var items = comityNames[index];
+                          return CheckboxListTile(
+                              title: Text(items.toString()),
+                              value: _isSelected,
+                              onChanged: (bool newValue) {
+                                setState(() {
+                                  _isSelected = newValue;
+                                });
+                              });
+                        }, separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.grey,),);
+                  })),
+        );
+  }
+}
+

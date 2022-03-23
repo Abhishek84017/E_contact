@@ -99,7 +99,7 @@ class _ComityDetailsState extends State<ComityDetails> {
     try {
       if (streamResponse.statusCode == 200) {
         final jsonData =
-        jsonDecode(await streamResponse.stream.bytesToString());
+            jsonDecode(await streamResponse.stream.bytesToString());
         Fluttertoast.showToast(msg: jsonData['message']);
         _title.clear();
         imageFile.path == null;
@@ -127,94 +127,101 @@ class _ComityDetailsState extends State<ComityDetails> {
       body: _isLoading
           ? const CircularIndicator()
           : Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: comityDetail.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery
-                        .of(context)
-                        .orientation == Orientation.landscape ? 3 : 2,
-                    crossAxisSpacing: 1.w,
-                    mainAxisSpacing: 1.w,
-                    childAspectRatio: (2 / 1.3)),
-                itemBuilder: (context, index) {
-                  var item = comityDetail[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () =>
-                          Navigator.push(context, CupertinoPageRoute(builder: (
-                              context) =>
-                              ComityMemberDetails(comityId: item.id,))),
-                      child: Card(
-                        shadowColor: Colors.white,
-                        elevation: 10,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Icon(Icons.group),
-                            Text(item.title),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ),
-          SignInButton(
-            text: 'Add Comity',
-            width: 0.95.sw,
-            callback: () async  {
-             return  await  showModalBottomSheet(context: context, builder: (context) {
-                return Column(
-                  children: [
-                    InputField(
-                      text: 'title',
-                      controller: _title,
-                      inputDecoration: const InputDecoration(hintText: 'Title'),
-                    ),
-                    InputField(
-                      readonly: true,
-                      maxLines: 2,
-                      onTap: (){
-                        _getImage();
-                        },
-                      text: 'Logo',
-                      controller: _image,
-                      inputDecoration: InputDecoration(
-                          hintText: imageFile == null
-                              ? 'Upload Image'
-                              : imageFile.path
-                              .split("/")
-                              .last),
-                    ),
-                    SignInButton(
-                      text: 'Add Comity Details',
-                      width: 0.75.sw,
-                       callback: () {
-                         if (_title.text.isEmpty) {
-                           Fluttertoast.showToast(msg: 'Titel Required');
-                           return;
-                         }
-                         if (imageFile == null) {
-                           Fluttertoast.showToast(msg: 'Logo Required');
-                           return;
-                         }
-                         _addComityDetails();
-                       },
-                    ),
-                  ],
-                );
-              });
-            },
-          )
-        ],
-      ),
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: comityDetail.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: MediaQuery.of(context).orientation ==
+                                  Orientation.landscape
+                              ? 3
+                              : 2,
+                          crossAxisSpacing: 1.w,
+                          mainAxisSpacing: 1.w,
+                          childAspectRatio: (2 / 1.3)),
+                      itemBuilder: (context, index) {
+                        var item = comityDetail[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () => Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => ComityMemberDetails(
+                                          comityId: item.id,
+                                        ))),
+                            child: Card(
+                              shadowColor: Colors.white,
+                              elevation: 10,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(Icons.group),
+                                  Text(item.title),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+                SignInButton(
+                  text: 'Add Comity',
+                  width: 0.95.sw,
+                  callback: () async {
+                    return await showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Column(
+                            children: [
+                              InputField(
+                                readonly: true,
+                                maxLines: 2,
+                                onTap: () {
+                                  _getImage();
+                                },
+                                text: 'Logo',
+                                controller: _image,
+                                inputDecoration: InputDecoration(
+                                    hintText: imageFile == null
+                                        ? 'Upload Image'
+                                        : imageFile.path.split("/").last),
+                              ),
+                              InputField(
+                                text: 'title',
+                                controller: _title,
+                                inputDecoration:
+                                    const InputDecoration(hintText: 'Title'),
+                              ),
+                              SignInButton(
+                                text: 'Add Comity Details',
+                                width: 0.75.sw,
+                                callback: () {
+                                  if (_title.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Titel Required');
+                                    return;
+                                  }
+                                  if (imageFile == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Logo Required');
+                                    return;
+                                  }
+                                  _addComityDetails();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                )
+              ],
+            ),
     );
   }
 }
