@@ -340,6 +340,7 @@ class ShowData extends StatefulWidget {
 class _ShowDataState extends State<ShowData> {
   List<ComityDetailsModel> comityDetail = <ComityDetailsModel>[];
   List<String> comityNames = <String>[];
+  List<int> a = <int>[];
   bool _isComityLoading = true;
 
   Map<int, bool> answer = {};
@@ -380,7 +381,7 @@ class _ShowDataState extends State<ShowData> {
     return _isComityLoading
         ? const CircularIndicator()
         : AlertDialog(
-            content: SizedBox(
+            content: Container(
                 height: 500,
                 width: 300,
                 child: StatefulBuilder(builder: (context, setState) {
@@ -396,6 +397,12 @@ class _ShowDataState extends State<ShowData> {
                             onChanged: (bool newValue) {
                               setState(() {
                                 answer[index] = newValue;
+                                if (answer[index] == true) {
+                                  a.add(index);
+                                }
+                                if (answer[index] == false) {
+                                  a.remove(index);
+                                }
                               });
                             });
                       });
@@ -406,6 +413,9 @@ class _ShowDataState extends State<ShowData> {
                     ),
                   );
                 })),
+            actions: [
+              TextButton(onPressed: () {}, child: const Text('Send')),
+            ],
           );
   }
 }
