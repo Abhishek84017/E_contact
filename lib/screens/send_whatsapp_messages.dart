@@ -191,6 +191,35 @@ class MemberDetailsModel {
   }
 }
 
+class ComityMemberDetailsModel {
+  int id;
+  int committeeId;
+  String name;
+  String mobile;
+  String insertedIp;
+
+  ComityMemberDetailsModel(
+      {this.id, this.committeeId, this.name, this.mobile, this.insertedIp});
+
+  ComityMemberDetailsModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    committeeId = json['committee_id'];
+    name = json['name'];
+    mobile = json['mobile'];
+    insertedIp = json['inserted_ip'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['committee_id'] = this.committeeId;
+    data['name'] = this.name;
+    data['mobile'] = this.mobile;
+    data['inserted_ip'] = this.insertedIp;
+    return data;
+  }
+}
+
 class SendWhatsappMessage extends StatefulWidget {
   const SendWhatsappMessage({Key key}) : super(key: key);
 
@@ -342,10 +371,14 @@ class _ShowDataState extends State<ShowData> {
   List<String> comityNames = <String>[];
   List<int> a = <int>[];
   bool _isComityLoading = true;
-
   Map<int, bool> answer = {};
+  List<ComityMemberDetailsModel> comityMembers = <ComityMemberDetailsModel>[];
+
+  int checkedComityNumber;
+
 
   Future _getComity() async {
+    a.clear();
     comityDetail.clear();
     final response = await http.get(Uri.parse(
         'https://econtact.votersmanagement.com/api/get-all-committee'));
@@ -366,6 +399,14 @@ class _ShowDataState extends State<ShowData> {
       Fluttertoast.showToast(msg: 'Internet Required');
     } catch (_) {
       Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
+  Future _sendMessageComityMembers() async {
+    checkedComityNumber = a.length;
+    comityMembers.clear();
+    for(var i = 0; i<checkedComityNumber; i++){
+      print(i);
     }
   }
 
@@ -414,7 +455,9 @@ class _ShowDataState extends State<ShowData> {
                   );
                 })),
             actions: [
-              TextButton(onPressed: () {}, child: const Text('Send')),
+              TextButton(onPressed: () {
+                _sendMessageComityMembers();
+              }, child: const Text('Send')),
             ],
           );
   }
