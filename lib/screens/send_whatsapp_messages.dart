@@ -342,7 +342,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                     return await showDialog(
                         context: context,
                         builder: (_) {
-                          return const ShowData();
+                          return  ShowData(textMessage:_textmessage.text,);
                         });
                   },
                 ),
@@ -360,7 +360,8 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
 }
 
 class ShowData extends StatefulWidget {
-  const ShowData({Key key}) : super(key: key);
+  final String textMessage;
+  const ShowData({Key key,this.textMessage}) : super(key: key);
 
   @override
   State<ShowData> createState() => _ShowDataState();
@@ -373,8 +374,11 @@ class _ShowDataState extends State<ShowData> {
   bool _isComityLoading = true;
   Map<int, bool> answer = {};
   List<ComityMemberDetailsModel> comityMembers = <ComityMemberDetailsModel>[];
-
   int checkedComityNumber;
+  List<String> comityMembersMobileNo = <String>[];
+  bool _sendWhatsappMessageMembers = true;
+
+
 
 
   Future _getComity() async {
@@ -403,10 +407,51 @@ class _ShowDataState extends State<ShowData> {
   }
 
   Future _sendMessageComityMembers() async {
-    checkedComityNumber = a.length;
-    comityMembers.clear();
-    for(var i = 0; i<checkedComityNumber; i++){
-      print(i);
+    for (var i = 0; i < a.length; i++) {
+      int c = a[i];
+      print(c + 1);
+      final response = await http.get(Uri.parse(
+          'https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
+      try {
+        if (response.statusCode == 200) {
+          comityMembers.clear();
+          final jsonData = jsonDecode(response.body);
+          if (jsonData['data'] != null) {
+            jsonData['data'].forEach((v) {
+              comityMembers.add(ComityMemberDetailsModel.fromJson(v));
+            });
+          }
+          comityMembersMobileNo = comityMembers.map((e) => e.mobile).toList();
+          print(comityMembers.length);
+          print(comityMembersMobileNo);
+          for (var j = 0; j < comityMembersMobileNo.length; j++) {
+            final request = await http.get(Uri.parse(
+                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${comityMembersMobileNo[j]}&messageType=text&message=${widget.textMessage}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
+            if (j - comityMembersMobileNo.length == -1) {
+              try {
+                if (request.statusCode == 200) {
+                  final jsonData = jsonDecode(request.body);
+                  if (jsonData['statusCode'] == 862) {
+                    Fluttertoast.showToast(msg: jsonData['message']);
+                  } else if (jsonData['statusCode'] == 1  && i - a.length == -1) {
+                    setState(() {
+                      _sendWhatsappMessageMembers = true;
+                      Navigator.pop(context,true);
+                    });
+                    Fluttertoast.showToast(msg: jsonData['successMessage']);
+                  }
+                }
+              } catch (_) {
+                Fluttertoast.showToast(msg: 'Something Went Wrong');
+              }
+            }
+          }
+        }
+      } on SocketException catch (_) {
+        Fluttertoast.showToast(msg: 'Internet Connection Required');
+      } catch (_) {
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
     }
   }
 
@@ -455,9 +500,17 @@ class _ShowDataState extends State<ShowData> {
                   );
                 })),
             actions: [
-              TextButton(onPressed: () {
-                _sendMessageComityMembers();
-              }, child: const Text('Send')),
+             _sendWhatsappMessageMembers ? TextButton(
+                  onPressed: () {
+                    _sendMessageComityMembers();
+                    setState(() {
+                      _sendWhatsappMessageMembers = false;
+                    });
+                  },
+                  child: const Text('Send')) :  const Padding(
+                    padding: EdgeInsets.only(right:10),
+                    child: CircularProgressIndicator(strokeWidth: 2.0,),
+                  ),
             ],
           );
   }
