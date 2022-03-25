@@ -342,7 +342,9 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                     return await showDialog(
                         context: context,
                         builder: (_) {
-                          return  ShowData(textMessage:_textmessage.text,);
+                          return ShowData(
+                            textMessage: _textmessage.text,
+                          );
                         });
                   },
                 ),
@@ -361,7 +363,8 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
 
 class ShowData extends StatefulWidget {
   final String textMessage;
-  const ShowData({Key key,this.textMessage}) : super(key: key);
+
+  const ShowData({Key key, this.textMessage}) : super(key: key);
 
   @override
   State<ShowData> createState() => _ShowDataState();
@@ -377,9 +380,6 @@ class _ShowDataState extends State<ShowData> {
   int checkedComityNumber;
   List<String> comityMembersMobileNo = <String>[];
   bool _sendWhatsappMessageMembers = true;
-
-
-
 
   Future _getComity() async {
     a.clear();
@@ -410,8 +410,7 @@ class _ShowDataState extends State<ShowData> {
     for (var i = 0; i < a.length; i++) {
       int c = a[i];
       print(c + 1);
-      final response = await http.get(Uri.parse(
-          'https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
+      final response = await http.get(Uri.parse('https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
       try {
         if (response.statusCode == 200) {
           comityMembers.clear();
@@ -433,10 +432,11 @@ class _ShowDataState extends State<ShowData> {
                   final jsonData = jsonDecode(request.body);
                   if (jsonData['statusCode'] == 862) {
                     Fluttertoast.showToast(msg: jsonData['message']);
-                  } else if (jsonData['statusCode'] == 1  && i - a.length == -1) {
+                  } else if (jsonData['statusCode'] == 1 &&
+                      i - a.length == -1) {
                     setState(() {
                       _sendWhatsappMessageMembers = true;
-                      Navigator.pop(context,true);
+                      Navigator.pop(context, true);
                     });
                     Fluttertoast.showToast(msg: jsonData['successMessage']);
                   }
@@ -500,17 +500,21 @@ class _ShowDataState extends State<ShowData> {
                   );
                 })),
             actions: [
-             _sendWhatsappMessageMembers ? TextButton(
-                  onPressed: () {
-                    _sendMessageComityMembers();
-                    setState(() {
-                      _sendWhatsappMessageMembers = false;
-                    });
-                  },
-                  child: const Text('Send')) :  const Padding(
-                    padding: EdgeInsets.only(right:10),
-                    child: CircularProgressIndicator(strokeWidth: 2.0,),
-                  ),
+              _sendWhatsappMessageMembers
+                  ? TextButton(
+                      onPressed: () {
+                        _sendMessageComityMembers();
+                        setState(() {
+                          _sendWhatsappMessageMembers = false;
+                        });
+                      },
+                      child: const Text('Send'))
+                  : const Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                      ),
+                    ),
             ],
           );
   }
