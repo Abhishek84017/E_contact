@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:widget_of_the_week/pages/auth/signin.dart';
-
-
+import 'package:widget_of_the_week/pages/auth/Welcomepage.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);

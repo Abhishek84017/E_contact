@@ -23,7 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool finalAdminData;
-  String homePageMobileNo;
 
   final List<String> name = [
     "Comity Details",
@@ -67,7 +66,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future checkAdmin() async {
-    homePageMobileNo = widget.mobile;
     bool adminValue = kSharedPreferences.getBool('Admin');
     setState(() {
       finalAdminData = adminValue;
@@ -115,8 +113,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(
               icon: const Icon(Icons.notifications),
-              onPressed: () {
-                },
+              onPressed: () {},
               splashColor: Colors.red,
             ),
           ],
@@ -163,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => MyProfile(
-                                      mobileCheck: homePageMobileNo,
+                                      mobileCheck: widget.mobile,
                                     )));
                       }
 
