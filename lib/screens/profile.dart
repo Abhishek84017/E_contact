@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:widget_of_the_week/constant/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-import 'package:widget_of_the_week/pages/widgets/circular.dart';
 
+import 'package:widget_of_the_week/pages/widgets/circular.dart';
 
 class ProfileModel {
   int id;
@@ -293,7 +295,9 @@ class _MyProfileState extends State<MyProfile> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title:  widget.id != null ?  const Text('Member Details') : const Text('Personal Details'),
+          title: widget.id != null
+              ? const Text('Member Details')
+              : const Text('Personal Details'),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -314,8 +318,7 @@ class _MyProfileState extends State<MyProfile> {
                               child: _imageLoading == false
                                   ? ClipOval(
                                       child: CachedNetworkImage(
-                                        imageUrl:
-                                            "http://econtact.votersmanagement.com/${profileDetail[0].image}",
+                                        imageUrl: "http://econtact.votersmanagement.com/${profileDetail[0].image}",
                                         imageBuilder:
                                             (context, imageProvider) =>
                                                 Container(
@@ -368,13 +371,44 @@ class _MyProfileState extends State<MyProfile> {
                         margin: EdgeInsets.only(bottom: 20.0.h),
                         child: Column(
                           children: [
-                            _listTile(' Name:         ${profileDetail[0].name}',
-                                () {}),
-                            _listTile('Mobile No:  ${profileDetail[0].mobile}',
-                                () {}),
-                            _listTile(
-                                'Email Id:       ${profileDetail[0].email}',
-                                () {})
+                            _listTile1(title: ' Name:         ${profileDetail[0].name}'),
+                            _listTile1(title: 'Mobile No:  ${profileDetail[0].mobile}', trailing: Wrap(
+                                children: [
+                                  IconButton(
+                                      onPressed: () async {
+                                        if (await canLaunch(
+                                            'tel:${profileDetail[0].mobile}')) {
+                                          await launch(
+                                              'tel:${profileDetail[0].mobile}');
+                                        }
+                                      },
+                                      icon: const Icon(
+                                        Icons.phone,
+                                        color: Colors.blue,
+                                      )),
+                                  IconButton(
+                                    onPressed: () async {
+                                      if (await canLaunch(
+                                          "https://wa.me/${profileDetail[0].mobile}")) {
+                                        await launch(
+                                            "https://wa.me/+91${profileDetail[0].mobile}");
+                                      }
+                                    },
+                                    icon: const Icon(FontAwesome.whatsapp),
+                                    color: Colors.blue,
+                                  )
+                                ],
+                              ),),
+                            _listTile1(title: 'Email Id:       ${profileDetail[0].email}', trailing: IconButton(
+                                    color: Colors.blue,
+                                    onPressed: () async {
+                                      if (await canLaunch(
+                                          'mailto:${profileDetail[0].email}')) {
+                                        await launch(
+                                            'mailto:${profileDetail[0].email}');
+                                      }
+                                    },
+                                    icon: const Icon(FontAwesome.paper_plane))),
                           ],
                         ),
                         shadowColor: Palette.shadowColor,
@@ -393,15 +427,44 @@ class _MyProfileState extends State<MyProfile> {
                         margin: EdgeInsets.symmetric(vertical: 20.0.h),
                         child: Column(
                           children: [
-                            _listTile(
-                                'Name:            ${profileDetail[0].firmName}',
-                                () {}),
-                            _listTile(
-                                'Mobile No:    ${profileDetail[0].officeContact}',
-                                () {}),
-                            _listTile(
-                                'Email Id:        ${profileDetail[0].officeEmail}',
-                                () {})
+                            _listTile1(title:'Name:            ${profileDetail[0].firmName}',),
+                            _listTile1(title: 'Mobile No:    ${profileDetail[0].officeContact}',trailing: Wrap(
+                              children: [
+                                IconButton(
+                                    onPressed: () async {
+                                      if (await canLaunch(
+                                          'tel:${profileDetail[0].officeContact}')) {
+                                        await launch(
+                                            'tel:${profileDetail[0].officeContact}');
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.phone,
+                                      color: Colors.blue,
+                                    )),
+                                IconButton(
+                                  onPressed: () async {
+                                    if (await canLaunch(
+                                        "https://wa.me/${profileDetail[0].officeContact}")) {
+                                      await launch(
+                                          "https://wa.me/+91${profileDetail[0].officeContact}");
+                                    }
+                                  },
+                                  icon: const Icon(FontAwesome.whatsapp),
+                                  color: Colors.blue,
+                                )
+                              ],
+                            ),),
+                            _listTile1(title: 'Email Id:        ${profileDetail[0].officeEmail}',trailing: IconButton(
+                                color: Colors.blue,
+                                onPressed: () async {
+                                  if (await canLaunch(
+                                      'mailto:${profileDetail[0].officeEmail}')) {
+                                    await launch(
+                                        'mailto:${profileDetail[0].officeEmail}');
+                                  }
+                                },
+                                icon: const Icon(FontAwesome.paper_plane)))
                           ],
                         ),
                         shadowColor: Palette.shadowColor,
@@ -420,15 +483,9 @@ class _MyProfileState extends State<MyProfile> {
                         margin: EdgeInsets.symmetric(vertical: 20.0.h),
                         child: Column(
                           children: [
-                            _listTile(
-                                'Occupation:    ${profileDetail[0].occupation}',
-                                () {}),
-                            _listTile(
-                                'Date Of Birth: ${profileDetail[0].dateOfBirth}',
-                                () {}),
-                            _listTile(
-                                'Birth Place:     ${profileDetail[0].birthPlace}',
-                                () {})
+                            _listTile1(title: 'Occupation:    ${profileDetail[0].occupation}',),
+                            _listTile1(title: 'Date Of Birth: ${profileDetail[0].dateOfBirth}',),
+                            _listTile1(title: 'Birth Place:     ${profileDetail[0].birthPlace}',)
                           ],
                         ),
                         shadowColor: Palette.shadowColor,
@@ -441,13 +498,15 @@ class _MyProfileState extends State<MyProfile> {
     );
   }
 
-  Widget _listTile(
+  Widget _listTile1({
     String title,
     GestureTapCallback onTap,
-  ) {
+    Widget trailing,
+  }) {
     return ListTile(
-      title: Text(title),
+      title: title != null ? Text(title) : null,
       onTap: onTap,
+      trailing: trailing,
     );
   }
 }
