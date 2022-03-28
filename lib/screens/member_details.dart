@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
+import 'package:widget_of_the_week/screens/profile.dart';
 
 class MemberDetailsModel {
   int id;
@@ -260,12 +263,31 @@ class _MemberDetailsState extends State<MemberDetails> {
                                     child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.h, horizontal: 10.w),
-                                      /*leading: CircleAvatar(
-                              radius: 24.0,
-                              backgroundImage: NetworkImage(
-                                  'https://econtact.votersmanagement.com/${items.image}'),
-                              backgroundColor: Colors.transparent,
-                            ),*/
+                                      leading: ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                          "http://econtact.votersmanagement.com/${items.image}",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                              Container(
+                                                height: 50,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(50)),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                          placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                        ),
+                                      ),
                                       title: Text(items.name),
                                       subtitle: Text(items.occupation),
                                       trailing: Wrap(
@@ -296,6 +318,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                                           )
                                         ],
                                       ),
+                                      onTap: (){
+                                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items.id,)));
+                                      },
                                     ),
                                   );
                                 },
@@ -311,12 +336,31 @@ class _MemberDetailsState extends State<MemberDetails> {
                                     child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.h, horizontal: 10.w),
-                                      /*leading: CircleAvatar(
-                              radius: 24.0,
-                              backgroundImage: NetworkImage(
-                                  'https://econtact.votersmanagement.com/${items.image}'),
-                              backgroundColor: Colors.transparent,
-                            ),*/
+                                      leading: ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                          "http://econtact.votersmanagement.com/${items1.image}",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                              Container(
+                                                height: 50,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(50)),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                          placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                        ),
+                                      ),
                                       title: Text(items1.name),
                                       subtitle: Text(items1.occupation),
                                       trailing: Wrap(
@@ -347,6 +391,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                                           )
                                         ],
                                       ),
+                                      onTap: (){
+                                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items1.id,)));
+                                      },
                                     ),
                                   );
                                 },

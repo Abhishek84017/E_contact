@@ -21,6 +21,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateMixin
 {
+
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _usernameAdmin = TextEditingController();
@@ -41,10 +42,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         final jsonData = jsonDecode(response.body);
         Fluttertoast.showToast(msg: jsonData["message"]);
         if (response.statusCode == 200) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage(mobile: _username.text)));
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => HomePage(mobile: _username.text)));
+          await kSharedPreferences.setBool('loginData', true);
         }
         _username.clear();
         _password.clear();
@@ -73,6 +72,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         Fluttertoast.showToast(msg: jsonData["message"]);
         if (response.statusCode == 200) {
           await kSharedPreferences.setBool('Admin', true);
+          await kSharedPreferences.setBool('loginData', true);
           Navigator.push(context,
               CupertinoPageRoute(builder: (context) => const HomePage()));
         }

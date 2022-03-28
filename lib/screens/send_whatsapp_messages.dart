@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+
+
 class ComityDetailsModel {
   int id;
   String title;
@@ -232,46 +234,48 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
   final TextEditingController _textmessage = TextEditingController();
   List<MemberDetailsModel> memberDetail = <MemberDetailsModel>[];
   List<String> mobileNo = <String>[];
+  List<String> mobileWith = <String>[];
+
 
   Future _sendWhatsAppMessage() async {
-    Fluttertoast.showToast(msg: 'helllo');
+    print('hello');
     memberDetail.clear();
-    final response = await http.get(
-        Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
+    mobileWith.clear();
+    final response = await http.get(Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-
         if (jsonData['data'] != null) {
           jsonData['data'].forEach((v) {
             memberDetail.add(MemberDetailsModel.fromJson(v));
           });
         }
         mobileNo = memberDetail.map((e) => e.mobile).toList();
+
+        for( var i =0 ;i < mobileNo.length ; i++)
+          {
+            mobileWith.add('91${mobileNo[i]}');
+          }
+          print(mobileWith);
         if (mobileNo.isNotEmpty) {
-          for (var i = 0; i < mobileNo.length; i++) {
-            print(i);
-            print(mobileNo.length);
-            final request = await http.get(Uri.parse(
-                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${mobileNo[i]}&messageType=text&message=${_textmessage.text}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
-            if (i - mobileNo.length == -1) {
-              try {
-                if (request.statusCode == 200) {
-                  final jsonData = jsonDecode(request.body);
-                  if (jsonData['statusCode'] == 862) {
-                    Fluttertoast.showToast(msg: jsonData['message']);
-                  } else if (jsonData['statusCode'] == 1) {
-                    Fluttertoast.showToast(msg: jsonData['successMessage']);
-                  }
-                  _textmessage.clear();
-                  setState(() {
-                    _isMemberSend = true;
-                  });
-                }
-              } catch (_) {
-                Fluttertoast.showToast(msg: 'Something Went Wrong');
+          final request = await http.get(Uri.parse(
+              'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=$mobileWith}&messageType=text&message=hello_testing_message&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
+          print(request.request);
+          try {
+            if (request.statusCode == 200) {
+              final jsonData = jsonDecode(request.body);
+              if (jsonData['statusCode'] == 862) {
+                Fluttertoast.showToast(msg: jsonData['message']);
+              } else if (jsonData['statusCode'] == 1) {
+                Fluttertoast.showToast(msg: jsonData['successMessage']);
               }
+              _textmessage.clear();
+              setState(() {
+                _isMemberSend = true;
+              });
             }
+          } catch (_) {
+            Fluttertoast.showToast(msg: 'Something Went Wrong');
           }
         }
       }
@@ -284,6 +288,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
 
   @override
   Widget build(BuildContext context) {
+    _isMemberSend = true;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -410,7 +415,8 @@ class _ShowDataState extends State<ShowData> {
     for (var i = 0; i < a.length; i++) {
       int c = a[i];
       print(c + 1);
-      final response = await http.get(Uri.parse('https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
+      final response = await http.get(Uri.parse(
+          'https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
       try {
         if (response.statusCode == 200) {
           comityMembers.clear();

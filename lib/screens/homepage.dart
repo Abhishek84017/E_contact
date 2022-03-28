@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:widget_of_the_week/constant/palette.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:widget_of_the_week/pages/widgets/appbar.dart';
 import 'package:widget_of_the_week/screens/comitydetails.dart';
 import 'package:widget_of_the_week/screens/addmembers.dart';
 import 'package:widget_of_the_week/screens/member_details.dart';
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<bool> _onbackpress() async {
+  Future<bool> _onBackPress() async {
     return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -101,25 +102,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onbackpress,
+      onWillPop: _onBackPress,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Palette.basicColor,
-          title: const Text('Heading'),
-          leading: IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {},
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
-              splashColor: Colors.red,
-            ),
-          ],
+          title: const Text('heading'),
         ),
-
-        //body: const Center(child: Text('hello',style: TextStyle(fontSize: 100),)),
         body: GridView.builder(
             itemCount: finalAdminData == true ? name.length : name2.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

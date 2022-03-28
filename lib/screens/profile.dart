@@ -8,9 +8,8 @@ import 'package:widget_of_the_week/constant/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
-import 'package:widget_of_the_week/screens/homepage.dart';
+
 
 class ProfileModel {
   int id;
@@ -171,7 +170,9 @@ class ProfileModel {
 
 class MyProfile extends StatefulWidget {
   final String mobileCheck;
-  const MyProfile({Key key, this.mobileCheck}) : super(key: key);
+  final int id;
+
+  const MyProfile({Key key, this.mobileCheck, this.id}) : super(key: key);
 
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -237,9 +238,15 @@ class _MyProfileState extends State<MyProfile> {
             memberDetail.add(ProfileModel.fromJson(v));
           });
         }
-        profileDetail = memberDetail
-            .where((element) => element.code.contains(widget.mobileCheck))
-            .toList();
+
+        if (widget.id != null) {
+          profileDetail =
+              memberDetail.where((element) => element.id == widget.id).toList();
+        } else {
+          profileDetail = memberDetail
+              .where((element) => element.code.contains(widget.mobileCheck))
+              .toList();
+        }
 
         setState(() {
           _isLoading = false;
@@ -286,7 +293,7 @@ class _MyProfileState extends State<MyProfile> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Personal Details'),
+          title:  widget.id != null ?  const Text('Member Details') : const Text('Personal Details'),
         ),
         body: SingleChildScrollView(
           child: Padding(
