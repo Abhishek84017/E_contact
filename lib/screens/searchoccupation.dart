@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 import 'package:widget_of_the_week/screens/profile.dart';
 
+import 'add_contact.dart';
+
 class OccupationModel {
   int id;
   String code;
@@ -315,6 +317,21 @@ class _SearchOccupationState extends State<SearchOccupation> {
                                             icon: const Icon(
                                                 FontAwesome.whatsapp),
                                             color: Colors.blue,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          AddContact(
+                                                            name: items.name,
+                                                            mobileNo:
+                                                                items.mobile,
+                                                          )));
+                                            },
+                                            icon: const Icon(FontAwesome.plus),
+                                            color: Colors.blue,
                                           )
                                         ],
                                       ),
@@ -394,11 +411,31 @@ class _SearchOccupationState extends State<SearchOccupation> {
                                             icon: const Icon(
                                                 FontAwesome.whatsapp),
                                             color: Colors.blue,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          AddContact(
+                                                            name: items1.name,
+                                                            mobileNo:
+                                                                items1.mobile,
+                                                          )));
+                                            },
+                                            icon: const Icon(FontAwesome.plus),
+                                            color: Colors.blue,
                                           )
                                         ],
                                       ),
                                       onTap: () {
-                                        Navigator.push(context, CupertinoPageRoute(builder: (context) => MyProfile(id: items1.id,)));
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (context) => MyProfile(
+                                                      id: items1.id,
+                                                    )));
                                       },
                                     ),
                                   );

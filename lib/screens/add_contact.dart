@@ -41,7 +41,6 @@ class _AddContactState extends State<AddContact> {
           setState(() {
             _isloading = false;
             Fluttertoast.showToast(msg: 'Mobile No Added');
-            Navigator.pop(context,true);
           });
         }
       } else {
@@ -52,7 +51,6 @@ class _AddContactState extends State<AddContact> {
         setState(() {
           _isloading = false;
           Fluttertoast.showToast(msg: 'Mobile No Added');
-          Navigator.pop(context,true);
         });
       }
     } catch (e) {

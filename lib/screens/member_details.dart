@@ -315,6 +315,14 @@ class _MemberDetailsState extends State<MemberDetails> {
                                             icon: const Icon(
                                                 FontAwesome.whatsapp),
                                             color: Colors.blue,
+                                          ),
+                                          IconButton(
+                                            onPressed: ()  {
+                                              Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items.name,mobileNo:items.mobile,)));
+                                            },
+                                            icon: const Icon(
+                                                FontAwesome.plus),
+                                            color: Colors.blue,
                                           )
                                         ],
                                       ),
