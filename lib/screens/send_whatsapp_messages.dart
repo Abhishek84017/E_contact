@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,7 +7,6 @@ import 'package:widget_of_the_week/pages/widgets/text_field.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-
 
 
 class ComityDetailsModel {
@@ -251,7 +249,6 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
           });
         }
         mobileNo = memberDetail.map((e) => e.mobile).toList();
-
         for( var i =0 ;i < mobileNo.length ; i++)
           {
             mobileWith.add('91${mobileNo[i]}');

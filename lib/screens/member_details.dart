@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:http/http.dart' as http;
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
+import 'package:widget_of_the_week/screens/add_contact.dart';
 import 'package:widget_of_the_week/screens/profile.dart';
 
 class MemberDetailsModel {
@@ -386,6 +387,14 @@ class _MemberDetailsState extends State<MemberDetails> {
                                             },
                                             icon: const Icon(
                                                 FontAwesome.whatsapp),
+                                            color: Colors.blue,
+                                          ),
+                                          IconButton(
+                                            onPressed: ()  {
+                                                 Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items1.name,mobileNo:items1.mobile,)));
+                                              },
+                                            icon: const Icon(
+                                                FontAwesome.plus),
                                             color: Colors.blue,
                                           )
                                         ],
