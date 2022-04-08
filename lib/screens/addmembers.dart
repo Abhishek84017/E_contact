@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:widget_of_the_week/pages/widgets/circular.dart';
 import 'package:widget_of_the_week/pages/widgets/dropdownbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/singinbutton.dart';
 import 'package:widget_of_the_week/pages/widgets/text_field.dart';
@@ -670,9 +671,7 @@ class _AddMembersState extends State<AddMembers> {
                       },
                       width: 0.50.sw,
                     )
-                  : const CircularProgressIndicator(
-                      strokeWidth: 1.0,
-                    ),
+                  : const CircularIndicator(height:0.75,),
             ],
           ),
         ),

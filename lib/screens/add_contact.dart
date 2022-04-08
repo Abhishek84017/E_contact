@@ -40,7 +40,7 @@ class _AddContactState extends State<AddContact> {
           await ContactsService.addContact(newContact);
           setState(() {
             _isloading = false;
-            Fluttertoast.showToast(msg: 'Mobile No Added');
+            Fluttertoast.showToast(msg: 'Mobile No Added In Contact');
           });
         }
       } else {
@@ -50,7 +50,7 @@ class _AddContactState extends State<AddContact> {
         await ContactsService.addContact(newContact);
         setState(() {
           _isloading = false;
-          Fluttertoast.showToast(msg: 'Mobile No Added');
+          Fluttertoast.showToast(msg: 'Mobile No Added In Contact');
         });
       }
     } catch (e) {
@@ -88,7 +88,7 @@ class _AddContactState extends State<AddContact> {
             controller: _mobileNoSave,
           ),
           _isloading == true
-              ? const CircularIndicator()
+              ?  CircularIndicator(height:0.75,)
               : SignInButton(
                   width: 0.95.sw,
                   text: 'Add Contact',

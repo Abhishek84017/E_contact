@@ -305,7 +305,7 @@ class _MyProfileState extends State<MyProfile> {
             child: _isLoading
                 ? Padding(
                     padding: EdgeInsets.only(top: size.height / 2.50),
-                    child: const CircularIndicator(),
+                    child: const CircularIndicator(height: 0.75,),
                   )
                 : Column(
                     children: [
@@ -335,12 +335,12 @@ class _MyProfileState extends State<MyProfile> {
                                           ),
                                         ),
                                         placeholder: (context, url) =>
-                                            const CircularProgressIndicator(),
+                                            const CircularIndicator(height:0.5,),
                                         errorWidget: (context, url, error) =>
                                             const Icon(Icons.error),
                                       ),
                                     )
-                                  : const CircularIndicator(),
+                                  :  const CircularIndicator(height:0.75,),
                             ),
                             Positioned(
                                 top: 50.h,

@@ -151,7 +151,7 @@ class _ComityMemberDetailsState extends State<ComityMemberDetails> {
                             );
                           }),
                     )
-              : const CircularIndicator(),
+              :  CircularIndicator(height:0.75,),
           SignInButton(
             text: 'Add Member',
             width: 0.95.sw,

@@ -92,7 +92,7 @@ class _AddComityMemberDetailState extends State<AddComityMemberDetail> {
                     _addMemberDetail();
                   },
                 )
-              : const CircularIndicator(),
+              :   const CircularIndicator(height:0.75,),
         ],
       ),
     );

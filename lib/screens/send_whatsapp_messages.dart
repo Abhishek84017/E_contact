@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-
 class ComityDetailsModel {
   int id;
   String title;
@@ -234,45 +233,55 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
   List<String> mobileNo = <String>[];
   List<String> mobileWith = <String>[];
 
-
   Future _sendWhatsAppMessage() async {
-    print('hello');
     memberDetail.clear();
     mobileWith.clear();
-    final response = await http.get(Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
+    final response = await http.get(
+        Uri.parse('https://econtact.votersmanagement.com/api/get-all-member'));
     try {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
+
         if (jsonData['data'] != null) {
           jsonData['data'].forEach((v) {
             memberDetail.add(MemberDetailsModel.fromJson(v));
           });
         }
+
         mobileNo = memberDetail.map((e) => e.mobile).toList();
-        for( var i =0 ;i < mobileNo.length ; i++)
-          {
-            mobileWith.add('91${mobileNo[i]}');
-          }
-          print(mobileWith);
+        for (var i = 0; i < mobileNo.length; i++) {
+          mobileWith.add('91${mobileNo[i]}');
+        }
+
+        var data = <String, dynamic>{
+          'instanceId': 'bb2c5bd5-dcca-4b16-b1a7-46f5f70a8467',
+          'authToken': 'c07c518e-c571-460a-837e-fb1715be9186',
+          'to': mobileWith.join(","),
+          'channel': 'whatsapp',
+          'messageType': 'text',
+          'message': _textmessage.text,
+          'safeDelivery': 'true'
+        };
+
         if (mobileNo.isNotEmpty) {
-          final request = await http.get(Uri.parse(
-              'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=$mobileWith}&messageType=text&message=hello_testing_message&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
-          print(request.request);
-          try {
-            if (request.statusCode == 200) {
-              final jsonData = jsonDecode(request.body);
-              if (jsonData['statusCode'] == 862) {
-                Fluttertoast.showToast(msg: jsonData['message']);
-              } else if (jsonData['statusCode'] == 1) {
-                Fluttertoast.showToast(msg: jsonData['successMessage']);
-              }
-              _textmessage.clear();
+          final request = await http.post(
+              Uri.https('api.wapp.jiyaninfosoft.com', '/v1/send'),
+              body: data);
+          if (request.statusCode == 200) {
+            final jsonData = jsonDecode(request.body);
+            if (jsonData['successMessage'] == 'SUCCESS') {
+              Fluttertoast.showToast(msg: 'Success');
               setState(() {
                 _isMemberSend = true;
+                _textmessage.clear();
+              });
+            } else {
+              Fluttertoast.showToast(msg: jsonData['message']);
+              setState(() {
+                _isMemberSend = true;
+                _textmessage.clear();
               });
             }
-          } catch (_) {
-            Fluttertoast.showToast(msg: 'Something Went Wrong');
           }
         }
       }
@@ -285,7 +294,6 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
 
   @override
   Widget build(BuildContext context) {
-    _isMemberSend = true;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -323,6 +331,8 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                           if (_textmessage.text.isEmpty) {
                             Fluttertoast.showToast(msg: 'Enter Message');
                             return;
+                          } else {
+                            FocusScope.of(context).unfocus();
                           }
                           setState(() {
                             _isMemberSend = false;
@@ -332,7 +342,7 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                       )
                     : Padding(
                         padding: EdgeInsets.only(left: 20.w),
-                        child: const CircularIndicator(),
+                        child: const CircularIndicator(height: 0.75,),
                       ),
                 SignInButton(
                   text: 'Send To Group',
@@ -341,6 +351,10 @@ class _SendWhatsappMessageState extends State<SendWhatsappMessage> {
                       Fluttertoast.showToast(msg: 'Enter Message');
                       return;
                     }
+                    else
+                      {
+                        FocusScope.of(context).unfocus();
+                      }
                     return await showDialog(
                         context: context,
                         builder: (_) {
@@ -381,6 +395,8 @@ class _ShowDataState extends State<ShowData> {
   List<ComityMemberDetailsModel> comityMembers = <ComityMemberDetailsModel>[];
   int checkedComityNumber;
   List<String> comityMembersMobileNo = <String>[];
+  List<String> comityMembersMobileNoWith91 = <String>[];
+
   bool _sendWhatsappMessageMembers = true;
 
   Future _getComity() async {
@@ -409,14 +425,18 @@ class _ShowDataState extends State<ShowData> {
   }
 
   Future _sendMessageComityMembers() async {
+
     for (var i = 0; i < a.length; i++) {
+
       int c = a[i];
-      print(c + 1);
-      final response = await http.get(Uri.parse(
+        final response = await http.get(Uri.parse(
           'https://econtact.votersmanagement.com/api/get-all-contacts/${c + 1}'));
+
       try {
         if (response.statusCode == 200) {
           comityMembers.clear();
+          comityMembersMobileNo.clear();
+          comityMembersMobileNoWith91.clear();
           final jsonData = jsonDecode(response.body);
           if (jsonData['data'] != null) {
             jsonData['data'].forEach((v) {
@@ -424,28 +444,45 @@ class _ShowDataState extends State<ShowData> {
             });
           }
           comityMembersMobileNo = comityMembers.map((e) => e.mobile).toList();
-          print(comityMembers.length);
           print(comityMembersMobileNo);
+
           for (var j = 0; j < comityMembersMobileNo.length; j++) {
-            final request = await http.get(Uri.parse(
-                'https://api.wapp.jiyaninfosoft.com/v1/sendMessage?to=91${comityMembersMobileNo[j]}&messageType=text&message=${widget.textMessage}&caption=&instanceId=bb2c5bd5-dcca-4b16-b1a746f5f70a8467&channel=whatsapp&authToken=36c0cfde-ee94-4961-a34b-c913dab54d7d'));
-            if (j - comityMembersMobileNo.length == -1) {
-              try {
-                if (request.statusCode == 200) {
-                  final jsonData = jsonDecode(request.body);
-                  if (jsonData['statusCode'] == 862) {
-                    Fluttertoast.showToast(msg: jsonData['message']);
-                  } else if (jsonData['statusCode'] == 1 &&
-                      i - a.length == -1) {
-                    setState(() {
-                      _sendWhatsappMessageMembers = true;
-                      Navigator.pop(context, true);
-                    });
-                    Fluttertoast.showToast(msg: jsonData['successMessage']);
-                  }
+            comityMembersMobileNoWith91.add('91${comityMembersMobileNo[j]}');
+          }
+
+          print(comityMembersMobileNoWith91);
+
+          var data = <String, dynamic>{
+            'instanceId': 'bb2c5bd5-dcca-4b16-b1a7-46f5f70a8467',
+            'authToken': 'c07c518e-c571-460a-837e-fb1715be9186',
+            'to': comityMembersMobileNoWith91.join(","),
+            'channel': 'whatsapp',
+            'messageType': 'text',
+            'message': widget.textMessage,
+            'safeDelivery': 'true'
+          };
+
+          if (comityMembersMobileNo.isNotEmpty) {
+            final request = await http.post(
+                Uri.https('api.wapp.jiyaninfosoft.com', '/v1/send'),
+                body: data);
+
+            print(a.length - i);
+
+            if (a.length - i == 1) {
+              if (request.statusCode == 200) {
+                final jsonData = jsonDecode(request.body);
+                if (jsonData['successMessage'] == 'SUCCESS') {
+                  Fluttertoast.showToast(msg: 'Success');
+                  setState(() {
+                    _sendWhatsappMessageMembers = true;
+                  });
+                } else {
+                  Fluttertoast.showToast(msg: jsonData['message']);
+                  setState(() {
+                    _sendWhatsappMessageMembers = true;
+                  });
                 }
-              } catch (_) {
-                Fluttertoast.showToast(msg: 'Something Went Wrong');
               }
             }
           }
@@ -466,11 +503,10 @@ class _ShowDataState extends State<ShowData> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isSelected = false;
     return _isComityLoading
-        ? const CircularIndicator()
+        ?  CircularIndicator(height:0.75,)
         : AlertDialog(
-            content: Container(
+            content: SizedBox(
                 height: 500,
                 width: 300,
                 child: StatefulBuilder(builder: (context, setState) {
@@ -512,12 +548,7 @@ class _ShowDataState extends State<ShowData> {
                         });
                       },
                       child: const Text('Send'))
-                  : const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.0,
-                      ),
-                    ),
+                  : const CircularIndicator(height: 0.75),
             ],
           );
   }

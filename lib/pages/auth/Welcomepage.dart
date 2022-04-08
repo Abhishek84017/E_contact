@@ -137,7 +137,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                   Text(
                     'Welcome! Member',
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
                   ),
                   InputField(
                     controller: _username,
@@ -167,80 +167,80 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                   ),
                   isLoading
                       ? SignInButton(
-                          width: 0.95.sw,
-                          text: 'Login In',
-                          callback: () {
-                            if (_username.text.isEmpty) {
-                              Fluttertoast.showToast(msg: 'Username required');
-                              return;
-                            }
-                            if (_password.text.isEmpty) {
-                              Fluttertoast.showToast(msg: 'Password required');
-                              return;
-                            }
-                            setState(() {
-                              isLoading = false;
-                            });
-                            _signInMember();
-                          },
-                        )
-                      : const CircularIndicator(),
+                    width: 0.95.sw,
+                    text: 'Login In',
+                    callback: () {
+                      if (_username.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Username required');
+                        return;
+                      }
+                      if (_password.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Password required');
+                        return;
+                      }
+                      setState(() {
+                        isLoading = false;
+                      });
+                      _signInMember();
+                    },
+                  )
+                      : const CircularIndicator(height:0.75,),
                 ],
               ),
-               Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome! Admin',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
-                    ),
-                    InputField(
-                      controller: _usernameAdmin,
-                      inputDecoration: InputDecoration(
-                        hintText: 'Username',
-                        prefixIcon: Icon(
-                          Icons.email,
-                          size: 18.sp,
-                          color: Colors.black,
-                        ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome! Admin',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
+                  ),
+                  InputField(
+                    controller: _usernameAdmin,
+                    inputDecoration: InputDecoration(
+                      hintText: 'Username',
+                      prefixIcon: Icon(
+                        Icons.email,
+                        size: 18.sp,
+                        color: Colors.black,
                       ),
                     ),
-                    InputField(
-                      controller: _passwordAdmin,
-                      inputDecoration: InputDecoration(
-                        hintText: 'Password',
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          size: 18.sp,
-                          color: Colors.black,
-                        ),
+                  ),
+                  InputField(
+                    controller: _passwordAdmin,
+                    inputDecoration: InputDecoration(
+                      hintText: 'Password',
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        size: 18.sp,
+                        color: Colors.black,
                       ),
-                      textInputAction: TextInputAction.done,
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    _isLoadingAdmin
-                        ? SignInButton(
-                      width: 0.95.sw,
-                      text: 'Login In',
-                      callback: () {
-                        if (_usernameAdmin.text.isEmpty) {
-                          Fluttertoast.showToast(msg: 'Username required');
-                          return;
-                        }
-                        if (_passwordAdmin.text.isEmpty) {
-                          Fluttertoast.showToast(msg: 'Password required');
-                          return;
-                        }
-                        setState(() {
-                          _isLoadingAdmin = false;
-                        });
-                        _signInAdmin();
-                      },
-                    )
-                        : const CircularIndicator(),
-                  ],
+                    textInputAction: TextInputAction.done,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  _isLoadingAdmin
+                      ? SignInButton(
+                    width: 0.95.sw,
+                    text: 'Login In',
+                    callback: () {
+                      if (_usernameAdmin.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Username required');
+                        return;
+                      }
+                      if (_passwordAdmin.text.isEmpty) {
+                        Fluttertoast.showToast(msg: 'Password required');
+                        return;
+                      }
+                      setState(() {
+                        _isLoadingAdmin = false;
+                      });
+                      _signInAdmin();
+                    },
+                  )
+                      : const CircularIndicator(height:0.75),
+                ],
               )
             ]
             ),

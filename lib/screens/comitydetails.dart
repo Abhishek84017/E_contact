@@ -125,7 +125,7 @@ class _ComityDetailsState extends State<ComityDetails> {
         title: const Text('Comity Details'),
       ),
       body: _isLoading
-          ? const CircularIndicator()
+          ? const CircularIndicator(height:0.75,)
           : Column(
               children: [
                 Expanded(

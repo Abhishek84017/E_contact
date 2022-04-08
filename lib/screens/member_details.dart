@@ -53,41 +53,41 @@ class MemberDetailsModel {
 
   MemberDetailsModel(
       {this.id,
-      this.code,
-      this.name,
-      this.gotra,
-      this.gender,
-      this.age,
-      this.bloodGroup,
-      this.dateOfBirth,
-      this.mobile,
-      this.email,
-      this.address,
-      this.firmName,
-      this.officeAddress,
-      this.occupation,
-      this.occupationDetail,
-      this.officeContact,
-      this.image,
-      this.nativePlace,
-      this.birthPlace,
-      this.dateOfJoin,
-      this.socialGroup,
-      this.status,
-      this.barcode,
-      this.password,
-      this.anniversary,
-      this.fatherName,
-      this.motherName,
-      this.officeEmail,
-      this.reference,
-      this.specialAchievement,
-      this.whyJoin,
-      this.aadharNo,
-      this.token,
-      this.marrital,
-      this.deviceType,
-      this.proof});
+        this.code,
+        this.name,
+        this.gotra,
+        this.gender,
+        this.age,
+        this.bloodGroup,
+        this.dateOfBirth,
+        this.mobile,
+        this.email,
+        this.address,
+        this.firmName,
+        this.officeAddress,
+        this.occupation,
+        this.occupationDetail,
+        this.officeContact,
+        this.image,
+        this.nativePlace,
+        this.birthPlace,
+        this.dateOfJoin,
+        this.socialGroup,
+        this.status,
+        this.barcode,
+        this.password,
+        this.anniversary,
+        this.fatherName,
+        this.motherName,
+        this.officeEmail,
+        this.reference,
+        this.specialAchievement,
+        this.whyJoin,
+        this.aadharNo,
+        this.token,
+        this.marrital,
+        this.deviceType,
+        this.proof});
 
   MemberDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -186,7 +186,7 @@ class _MemberDetailsState extends State<MemberDetails> {
   void _memberNameSearch(String newValue) {
     searchMemberDetails = memberDetail
         .where((element) =>
-            element.name.toLowerCase().contains(newValue.toLowerCase()))
+        element.name.toLowerCase().contains(newValue.toLowerCase()))
         .toList();
     setState(() {});
   }
@@ -235,187 +235,188 @@ class _MemberDetailsState extends State<MemberDetails> {
               controller: _occupationInput,
               onChanged: _memberNameSearch,
               inputDecoration:
-                  const InputDecoration(hintText: 'Search By MemberName'),
+              const InputDecoration(hintText: 'Search By MemberName'),
             ),
             _isloading == true
                 ? Padding(
-                    padding: EdgeInsets.only(top: size.height / 3),
-                    child: const Center(child: CircularIndicator()),
-                  )
+              padding: EdgeInsets.only(top: size.height / 3),
+              child: const Center(child: CircularIndicator(height:0.75,)),
+            )
                 : memberDetail.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.only(top: size.height / 3),
-                        child: Text(
-                          'No Data Found',
-                          style: TextStyle(fontSize: 15.sp),
-                        ),
-                      )
-                    : Expanded(
-                        child: searchMemberDetails.isNotEmpty
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  var items = searchMemberDetails[index];
-                                  return Card(
-                                    shadowColor: Colors.black,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 10.w),
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.h, horizontal: 10.w),
-                                      leading: ClipOval(
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                          "http://econtact.votersmanagement.com/${items.image}",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                              Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(50)),
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                          placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                        ),
-                                      ),
-                                      title: Text(items.name),
-                                      subtitle: Text(items.occupation),
-                                      trailing: Wrap(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () async {
-                                                if (await canLaunch(
-                                                    'tel:${items.mobile}')) {
-                                                  await launch(
-                                                      'tel:${items.mobile}');
-                                                }
-                                              },
-                                              icon: const Icon(
-                                                Icons.phone,
-                                                color: Colors.blue,
-                                              )),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (await canLaunch(
-                                                  "https://wa.me/${items.mobile}")) {
-                                                await launch(
-                                                    "https://wa.me/+91${items.mobile}");
-                                              }
-                                            },
-                                            icon: const Icon(
-                                                FontAwesome.whatsapp),
-                                            color: Colors.blue,
-                                          ),
-                                          IconButton(
-                                            onPressed: ()  {
-                                              Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items.name,mobileNo:items.mobile,)));
-                                            },
-                                            icon: const Icon(
-                                                FontAwesome.plus),
-                                            color: Colors.blue,
-                                          )
-                                        ],
-                                      ),
-                                      onTap: (){
-                                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items.id,)));
-                                      },
-                                    ),
-                                  );
-                                },
-                                itemCount: searchMemberDetails.length,
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  var items1 = memberDetail[index];
-                                  return Card(
-                                    shadowColor: Colors.black,
-                                    margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.h, horizontal: 10.w),
-                                      leading: ClipOval(
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                          "http://econtact.votersmanagement.com/${items1.image}",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                              Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(50)),
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                          placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                        ),
-                                      ),
-                                      title: Text(items1.name),
-                                      subtitle: Text(items1.occupation),
-                                      trailing: Wrap(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () async {
-                                                if (await canLaunch(
-                                                    'tel:${items1.mobile}')) {
-                                                  await launch(
-                                                      'tel:${items1.mobile}');
-                                                }
-                                              },
-                                              icon: const Icon(
-                                                Icons.phone,
-                                                color: Colors.blue,
-                                              )),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (await canLaunch(
-                                                  "https://wa.me/${items1.mobile}")) {
-                                                await launch(
-                                                    "https://wa.me/+91${items1.mobile}");
-                                              }
-                                            },
-                                            icon: const Icon(
-                                                FontAwesome.whatsapp),
-                                            color: Colors.blue,
-                                          ),
-                                          IconButton(
-                                            onPressed: ()  {
-                                                 Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items1.name,mobileNo:items1.mobile,)));
-                                              },
-                                            icon: const Icon(
-                                                FontAwesome.plus),
-                                            color: Colors.blue,
-                                          )
-                                        ],
-                                      ),
-                                      onTap: (){
-                                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items1.id,)));
-                                      },
-                                    ),
-                                  );
-                                },
-                                itemCount: memberDetail.length,
+                ? Padding(
+              padding: EdgeInsets.only(top: size.height / 3),
+              child: Text(
+                'No Data Found',
+                style: TextStyle(fontSize: 15.sp),
+              ),
+            )
+                : Expanded(
+              child: searchMemberDetails.isNotEmpty
+                  ? ListView.builder(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  var items = searchMemberDetails[index];
+                  return Card(
+                    shadowColor: Colors.black,
+                    margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.h, horizontal: 10.w),
+                      leading: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl:
+                          "http://econtact.votersmanagement.com/${items.image}",
+                          imageBuilder:
+                              (context, imageProvider) =>
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                      )
+                          placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                        ),
+                      ),
+                      title: Text(items.name),
+                      subtitle: Text(items.occupation),
+                      trailing: Wrap(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                if (await canLaunch(
+                                    'tel:${items.mobile}')) {
+                                  await launch(
+                                      'tel:${items.mobile}');
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.phone,
+                                color: Colors.blue,
+                              )),
+                          IconButton(
+                            onPressed: () async {
+                              if (await canLaunch(
+                                  "https://wa.me/${items.mobile}")) {
+                                await launch(
+                                    "https://wa.me/+91${items.mobile}");
+                              }
+                            },
+                            icon: const Icon(
+                                FontAwesome.whatsapp),
+                            color: Colors.blue,
+                          ),
+                          IconButton(
+                            onPressed: ()  {
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items.name,mobileNo:items.mobile,)));
+                            },
+                            icon: const Icon(
+                                FontAwesome.plus),
+                            color: Colors.blue,
+                          )
+                        ],
+                      ),
+                      onTap: (){
+                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items.id,)));
+                      },
+                    ),
+                  );
+                },
+                itemCount: searchMemberDetails.length,
+              )
+                  : ListView.builder(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  var items1 = memberDetail[index];
+                  return Card(
+                    shadowColor: Colors.black,
+                    margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.h, horizontal: 10.w),
+                      leading: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl:
+                          "http://econtact.votersmanagement.com/${items1.image}",
+                          imageBuilder:
+                              (context, imageProvider) =>
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                          placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                        ),
+                      ),
+                      title: Text(items1.name),
+                      subtitle: Text(items1.occupation),
+                      trailing: Wrap(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                if (await canLaunch(
+                                    'tel:${items1.mobile}')) {
+                                  await launch(
+                                      'tel:${items1.mobile}');
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.phone,
+                                color: Colors.blue,
+                              )),
+                          IconButton(
+                            onPressed: () async {
+                              if (await canLaunch(
+                                  "https://wa.me/${items1.mobile}")) {
+                                await launch(
+                                    "https://wa.me/+91${items1.mobile}");
+                              }
+                            },
+                            icon: const Icon(
+                                FontAwesome.whatsapp),
+                            color: Colors.blue,
+                          ),
+                          IconButton(
+                            onPressed: ()  {
+                              Navigator.push(context, CupertinoPageRoute(builder: (context) => AddContact(name: items1.name,mobileNo:items1.mobile,)));
+                            },
+                            icon: const Icon(
+                                FontAwesome.plus),
+                            color: Colors.blue,
+                          )
+                        ],
+                      ),
+                      onTap: (){
+                        Navigator.push(context,CupertinoPageRoute(builder: (context) =>  MyProfile(id: items1.id,)));
+                      },
+                    ),
+                  );
+                },
+                itemCount: memberDetail.length,
+              ),
+            )
           ],
         ),
       ),

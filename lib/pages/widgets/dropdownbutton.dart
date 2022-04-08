@@ -24,7 +24,7 @@ class DropDownButtonWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 3.h),
           child: SizedBox(
-            height: 48.h,
+            height: 50.h,
             child: DropdownButtonFormField(
               decoration: InputDecoration(
                   border: OutlineInputBorder(

@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constant/globle.dart';
 
 Future<void>  main() async {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   kSharedPreferences = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }

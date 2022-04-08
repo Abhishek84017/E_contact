@@ -105,7 +105,7 @@ class _AddComityState extends State<AddComity> {
                     _addComity();
                   },
                 )
-              : const CircularIndicator()
+              : const CircularIndicator(height:0.75,)
         ],
       ),
     );
